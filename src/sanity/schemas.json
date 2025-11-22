@@ -384,147 +384,6 @@
     }
   },
   {
-    "name": "contactPage",
-    "type": "document",
-    "attributes": {
-      "_id": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_type": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string",
-          "value": "contactPage"
-        }
-      },
-      "_createdAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_updatedAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_rev": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "body": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "blockContent"
-        },
-        "optional": true
-      },
-      "email": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "socialLinks": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "platform": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "union",
-                  "of": [
-                    {
-                      "type": "string",
-                      "value": "website"
-                    },
-                    {
-                      "type": "string",
-                      "value": "twitter"
-                    },
-                    {
-                      "type": "string",
-                      "value": "facebook"
-                    },
-                    {
-                      "type": "string",
-                      "value": "instagram"
-                    },
-                    {
-                      "type": "string",
-                      "value": "youtube"
-                    },
-                    {
-                      "type": "string",
-                      "value": "soundcloud"
-                    },
-                    {
-                      "type": "string",
-                      "value": "bandcamp"
-                    },
-                    {
-                      "type": "string",
-                      "value": "linkedin"
-                    },
-                    {
-                      "type": "string",
-                      "value": "other"
-                    }
-                  ]
-                },
-                "optional": true
-              },
-              "url": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "label": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              }
-            },
-            "rest": {
-              "type": "object",
-              "attributes": {
-                "_key": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "optional": true
-      }
-    }
-  },
-  {
     "name": "aboutPage",
     "type": "document",
     "attributes": {
@@ -825,13 +684,6 @@
         "value": {
           "type": "string"
         }
-      },
-      "programId": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
-        },
-        "optional": true
       },
       "programTitle": {
         "type": "objectAttribute",
@@ -1207,6 +1059,13 @@
                 },
                 "optional": true
               },
+              "title": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
               "date": {
                 "type": "objectAttribute",
                 "value": {
@@ -1299,6 +1158,13 @@
                 "type": "objectAttribute",
                 "value": {
                   "type": "unknown"
+                },
+                "optional": true
+              },
+              "title": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
                 },
                 "optional": true
               },
@@ -2449,13 +2315,6 @@
               "value": "other"
             }
           ]
-        },
-        "optional": true
-      },
-      "sortOrder": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
         },
         "optional": true
       }

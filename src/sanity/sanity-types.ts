@@ -66,23 +66,6 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
-export type ContactPage = {
-  _id: string;
-  _type: "contactPage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  body?: BlockContent;
-  email?: string;
-  socialLinks?: Array<{
-    platform?: "website" | "twitter" | "facebook" | "instagram" | "youtube" | "soundcloud" | "bandcamp" | "linkedin" | "other";
-    url?: string;
-    label?: string;
-    _key: string;
-  }>;
-};
-
 export type AboutPage = {
   _id: string;
   _type: "aboutPage";
@@ -134,7 +117,6 @@ export type Performance = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  programId?: number;
   programTitle?: string;
   composer?: string;
   context?: string;
@@ -197,6 +179,7 @@ export type Work = {
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
     media?: unknown;
+    title?: string;
     date?: string;
     performers?: string;
     location?: string;
@@ -212,6 +195,7 @@ export type Work = {
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
     media?: unknown;
+    title?: string;
     date?: string;
     performers?: string;
     location?: string;
@@ -398,7 +382,6 @@ export type Instrument = {
   name?: string;
   abbreviation?: string;
   category?: "woodwinds" | "brass" | "strings" | "percussion" | "keyboard" | "voice" | "electronics" | "other";
-  sortOrder?: number;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -497,5 +480,42 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = BlockContent | ContactPage | AboutPage | SanityImageCrop | SanityImageHotspot | Performance | Work | Publisher | Review | Slug | Recording | Instrument | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = BlockContent | AboutPage | SanityImageCrop | SanityImageHotspot | Performance | Work | Publisher | Review | Slug | Recording | Instrument | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/app/works/page.tsx
+// Variable: WORKS_LISTING_QUERY
+// Query: *[_type == "work" && !defined(parent)]{    _id,  title,  slug,  completionDate,  duration,  instrumentation[] {    _key,    instrument -> { name }  },  "children": *[_type == "work" && parent._ref == ^._id]{      _id,  title,  slug,  completionDate,  duration,  instrumentation[] {    _key,    instrument -> { name }  }  }}
+export type WORKS_LISTING_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  completionDate: string | null;
+  duration: string | null;
+  instrumentation: Array<{
+    _key: string;
+    instrument: {
+      name: string | null;
+    } | null;
+  }> | null;
+  children: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+    completionDate: string | null;
+    duration: string | null;
+    instrumentation: Array<{
+      _key: string;
+      instrument: {
+        name: string | null;
+      } | null;
+    }> | null;
+  }>;
+}>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "*[_type == \"work\" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  duration,\n  instrumentation[] {\n    _key,\n    instrument -> { name }\n  }\n,\n  \"children\": *[_type == \"work\" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  duration,\n  instrumentation[] {\n    _key,\n    instrument -> { name }\n  }\n\n  }\n}": WORKS_LISTING_QUERYResult;
+  }
+}

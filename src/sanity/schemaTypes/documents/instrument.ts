@@ -34,12 +34,6 @@ export const instrument = defineType({
         ],
       },
     }),
-    defineField({
-      name: 'sortOrder',
-      title: 'Sort Order',
-      type: 'number',
-      description: 'Order in score (lower numbers appear first)',
-    }),
   ],
   preview: {
     select: {
