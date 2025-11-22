@@ -1,4 +1,30 @@
 /**
+ * Extract a sortable year from a completion date string.
+ * Handles formats like "2021", "2016 – 2017", "2019-12-31".
+ * For ranges, returns the end year.
+ *
+ * @param dateString - Date string in various formats
+ * @returns Year as number, or 0 if unparseable
+ */
+export function getSortYear(dateString: string | null): number {
+  if (!dateString) return 0;
+
+  // For date ranges like "2016 – 2017", use the end year
+  const rangeMatch = dateString.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+  if (rangeMatch) {
+    return parseInt(rangeMatch[2], 10);
+  }
+
+  // For single years or ISO dates, extract the first 4-digit year
+  const yearMatch = dateString.match(/(\d{4})/);
+  if (yearMatch) {
+    return parseInt(yearMatch[1], 10);
+  }
+
+  return 0;
+}
+
+/**
  * Format a completion date string into a display format.
  * Handles ranges like "2017-2019" or single years like "2021".
  *
