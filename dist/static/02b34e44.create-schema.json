@@ -1,0 +1,1422 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "description": "If this piece is part of a series, select the parent work",
+        "to": [
+          {
+            "type": "work"
+          }
+        ],
+        "name": "parent",
+        "type": "reference",
+        "title": "Parent Work (for series)"
+      },
+      {
+        "initialValue": true,
+        "name": "isCompleted",
+        "type": "boolean",
+        "title": "Completed?"
+      },
+      {
+        "description": "Year or date range (e.g., \"2020\" or \"2018-2020\")",
+        "name": "completionDate",
+        "type": "string",
+        "title": "Completion Date(s)"
+      },
+      {
+        "description": "Duration in minutes (e.g., \"12\" or \"ca. 15\")",
+        "name": "duration",
+        "type": "string"
+      },
+      {
+        "name": "dedication",
+        "type": "string"
+      },
+      {
+        "rows": 3,
+        "name": "commissionInfo",
+        "type": "text"
+      },
+      {
+        "name": "programNote",
+        "type": "blockContent"
+      },
+      {
+        "description": "Additional notes displayed inline",
+        "name": "inlineNotes",
+        "type": "text"
+      },
+      {
+        "name": "miscellaneousNotes",
+        "type": "text"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "instrument"
+                  }
+                ],
+                "name": "instrument",
+                "type": "reference"
+              },
+              {
+                "initialValue": 1,
+                "name": "quantity",
+                "type": "number"
+              },
+              {
+                "description": "Additional details (e.g., \"doubling piccolo\")",
+                "name": "details",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "instrumentation",
+        "type": "array"
+      },
+      {
+        "description": "Short form (e.g., \"fl, cl, vn, vc, pf\")",
+        "name": "abbreviatedInstrumentation",
+        "type": "string"
+      },
+      {
+        "initialValue": false,
+        "name": "useAbbreviatedInstrumentation",
+        "type": "boolean",
+        "title": "Use Abbreviated Instrumentation?"
+      },
+      {
+        "description": "Alternative version instrumentation",
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "instrument"
+                  }
+                ],
+                "name": "instrument",
+                "type": "reference"
+              },
+              {
+                "initialValue": 1,
+                "name": "quantity",
+                "type": "number"
+              },
+              {
+                "name": "details",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "alternativeInstrumentation",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "name": "hasAlternativeInstrumentation",
+        "type": "boolean",
+        "title": "Has Alternative Instrumentation?"
+      },
+      {
+        "initialValue": false,
+        "name": "isFeatured",
+        "type": "boolean",
+        "title": "Featured?"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^http$/",
+                              "/^https$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "description": "YouTube or Vimeo URL",
+                "name": "url",
+                "type": "url",
+                "title": "Video URL"
+              },
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "performers",
+                "type": "string"
+              },
+              {
+                "name": "date",
+                "type": "string"
+              },
+              {
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "videos",
+        "type": "array"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "soundCloudEmbedUrl",
+        "type": "url",
+        "title": "SoundCloud Embed URL"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "accept": "audio/*"
+            },
+            "fields": [
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "performers",
+                "type": "string"
+              },
+              {
+                "name": "date",
+                "type": "string"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "file"
+          }
+        ],
+        "name": "audio",
+        "type": "array",
+        "title": "Audio Files"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "caption",
+                "type": "string"
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alt Text"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "name": "isPublished",
+        "type": "boolean",
+        "title": "Published?"
+      },
+      {
+        "to": [
+          {
+            "type": "publisher"
+          }
+        ],
+        "name": "publisher",
+        "type": "reference"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "publisherLink",
+        "type": "url"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "scoreSampleLink",
+        "type": "url"
+      },
+      {
+        "initialValue": false,
+        "name": "isOnCd",
+        "type": "boolean",
+        "title": "Published on CD?"
+      },
+      {
+        "options": {
+          "accept": ".pdf"
+        },
+        "name": "score",
+        "type": "file",
+        "title": "Score (PDF)"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "description",
+                "type": "string"
+              }
+            ],
+            "type": "file"
+          }
+        ],
+        "name": "downloads",
+        "type": "array",
+        "title": "Additional Downloads"
+      },
+      {
+        "description": "Downloads available without password",
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "description",
+                "type": "string"
+              }
+            ],
+            "type": "file"
+          }
+        ],
+        "name": "publicDownloads",
+        "type": "array"
+      },
+      {
+        "initialValue": true,
+        "name": "isPasswordProtected",
+        "type": "boolean",
+        "title": "Password Protect Downloads?"
+      },
+      {
+        "description": "Custom password for this work (leave blank to use global password)",
+        "name": "passwordOverride",
+        "type": "string"
+      },
+      {
+        "initialValue": false,
+        "name": "hasElectronics",
+        "type": "boolean",
+        "title": "Has Electronics?"
+      },
+      {
+        "hidden": "conditional",
+        "name": "electronicsDescription",
+        "type": "blockContent"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "description",
+                "type": "string"
+              }
+            ],
+            "type": "file"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "electronicsFiles",
+        "type": "array"
+      }
+    ],
+    "name": "work",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "albumArt",
+        "type": "image"
+      },
+      {
+        "name": "recordLabel",
+        "type": "string"
+      },
+      {
+        "name": "catalogNumber",
+        "type": "string"
+      },
+      {
+        "name": "releaseDate",
+        "type": "date"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "work"
+                  }
+                ],
+                "name": "work",
+                "type": "reference"
+              },
+              {
+                "description": "Use this if the work is not in the Works collection",
+                "name": "workTitle",
+                "type": "string",
+                "title": "Work Title (if not in system)"
+              },
+              {
+                "rows": 2,
+                "name": "performers",
+                "type": "text"
+              },
+              {
+                "name": "trackNumber",
+                "type": "number"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "tracks",
+        "type": "array",
+        "title": "Tracks / Pieces"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Link to label page or more info",
+        "name": "albumLink",
+        "type": "url"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "purchaseLink",
+        "type": "url"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "spotify",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "appleMusic",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "bandcamp",
+            "type": "url"
+          }
+        ],
+        "name": "streamingLinks",
+        "type": "object"
+      },
+      {
+        "initialValue": false,
+        "description": "Featured recordings appear first in listings",
+        "name": "isFeatured",
+        "type": "boolean",
+        "title": "Featured?"
+      },
+      {
+        "name": "description",
+        "type": "blockContent"
+      }
+    ],
+    "name": "recording",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "CD Review",
+              "value": "cd"
+            },
+            {
+              "title": "Performance Review",
+              "value": "performance"
+            },
+            {
+              "title": "News",
+              "value": "news"
+            },
+            {
+              "title": "General",
+              "value": "general"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "general",
+        "name": "reviewType",
+        "type": "string"
+      },
+      {
+        "name": "author",
+        "type": "string"
+      },
+      {
+        "description": "Name of publication (e.g., \"The New York Times\")",
+        "name": "source",
+        "type": "string",
+        "title": "Source / Publication"
+      },
+      {
+        "name": "reviewDate",
+        "type": "date"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "reviewLink",
+        "type": "url",
+        "title": "Link to Original"
+      },
+      {
+        "description": "Short excerpt or pull quote from the review",
+        "name": "excerpt",
+        "type": "blockContent"
+      },
+      {
+        "name": "body",
+        "type": "blockContent",
+        "title": "Full Text"
+      },
+      {
+        "of": [
+          {
+            "to": [
+              {
+                "type": "work"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to work"
+          }
+        ],
+        "name": "relatedWorks",
+        "type": "array"
+      },
+      {
+        "of": [
+          {
+            "to": [
+              {
+                "type": "recording"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to recording"
+          }
+        ],
+        "name": "relatedRecordings",
+        "type": "array"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alt Text"
+          },
+          {
+            "name": "caption",
+            "type": "string"
+          }
+        ],
+        "name": "featuredImage",
+        "type": "image"
+      }
+    ],
+    "name": "review",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "programDate",
+        "type": "date",
+        "title": "Performance Date"
+      },
+      {
+        "description": "Link to a work in the catalog (optional)",
+        "to": [
+          {
+            "type": "work"
+          }
+        ],
+        "name": "work",
+        "type": "reference"
+      },
+      {
+        "description": "Work title (use if not linking to a catalog entry)",
+        "name": "workTitle",
+        "type": "string"
+      },
+      {
+        "initialValue": "David Felder",
+        "name": "composer",
+        "type": "string"
+      },
+      {
+        "name": "ensemble",
+        "type": "string",
+        "title": "Ensemble / Performer"
+      },
+      {
+        "rows": 4,
+        "description": "List of performers",
+        "name": "personnel",
+        "type": "text"
+      },
+      {
+        "description": "Concert series, venue, or event name",
+        "name": "context",
+        "type": "string",
+        "title": "Context / Venue"
+      },
+      {
+        "description": "Title of the concert program (if applicable)",
+        "name": "programTitle",
+        "type": "string"
+      },
+      {
+        "description": "Abbreviated instrumentation for this performance",
+        "name": "instrumentation",
+        "type": "string"
+      },
+      {
+        "rows": 3,
+        "name": "notes",
+        "type": "text"
+      },
+      {
+        "description": "ID from external database (e.g., Airtable)",
+        "readOnly": true,
+        "name": "externalId",
+        "type": "string",
+        "title": "External ID"
+      }
+    ],
+    "name": "performance",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "About",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "body",
+        "type": "blockContent",
+        "title": "Biography"
+      },
+      {
+        "description": "Short biographical summary, awards, positions, etc.",
+        "name": "vitalInfo",
+        "type": "blockContent"
+      },
+      {
+        "description": "Links to external profiles, institutions, etc.",
+        "name": "otherLinks",
+        "type": "blockContent"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "caption",
+                "type": "string"
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alt Text"
+              },
+              {
+                "name": "credits",
+                "type": "string",
+                "title": "Photo Credit"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "URL for embedded stream (YouTube, Vimeo, etc.)",
+        "name": "streamEmbed",
+        "type": "url",
+        "title": "Stream Embed URL"
+      }
+    ],
+    "name": "aboutPage",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "Contact",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "body",
+        "type": "blockContent",
+        "title": "Content"
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "title": "Email Address"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "options": {
+                  "list": [
+                    {
+                      "title": "Website",
+                      "value": "website"
+                    },
+                    {
+                      "title": "Twitter/X",
+                      "value": "twitter"
+                    },
+                    {
+                      "title": "Facebook",
+                      "value": "facebook"
+                    },
+                    {
+                      "title": "Instagram",
+                      "value": "instagram"
+                    },
+                    {
+                      "title": "YouTube",
+                      "value": "youtube"
+                    },
+                    {
+                      "title": "SoundCloud",
+                      "value": "soundcloud"
+                    },
+                    {
+                      "title": "Bandcamp",
+                      "value": "bandcamp"
+                    },
+                    {
+                      "title": "LinkedIn",
+                      "value": "linkedin"
+                    },
+                    {
+                      "title": "Other",
+                      "value": "other"
+                    }
+                  ]
+                },
+                "name": "platform",
+                "type": "string"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^http$/",
+                              "/^https$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "url",
+                "type": "url",
+                "title": "URL"
+              },
+              {
+                "description": "Optional custom label",
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "socialLinks",
+        "type": "array"
+      }
+    ],
+    "name": "contactPage",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "description": "Short form (e.g., \"fl\" for flute, \"vn\" for violin)",
+        "name": "abbreviation",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Woodwinds",
+              "value": "woodwinds"
+            },
+            {
+              "title": "Brass",
+              "value": "brass"
+            },
+            {
+              "title": "Strings",
+              "value": "strings"
+            },
+            {
+              "title": "Percussion",
+              "value": "percussion"
+            },
+            {
+              "title": "Keyboard",
+              "value": "keyboard"
+            },
+            {
+              "title": "Voice",
+              "value": "voice"
+            },
+            {
+              "title": "Electronics",
+              "value": "electronics"
+            },
+            {
+              "title": "Other",
+              "value": "other"
+            }
+          ]
+        },
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "description": "Order in score (lower numbers appear first)",
+        "name": "sortOrder",
+        "type": "number"
+      }
+    ],
+    "name": "instrument",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "website",
+        "type": "url"
+      },
+      {
+        "name": "logo",
+        "type": "image"
+      }
+    ],
+    "name": "publisher",
+    "type": "document"
+  },
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/",
+                                "/^mailto$/",
+                                "/^tel$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                },
+                {
+                  "initialValue": true,
+                  "name": "blank",
+                  "type": "boolean",
+                  "title": "Open in new tab"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "URL"
+            },
+            {
+              "fields": [
+                {
+                  "to": [
+                    {
+                      "type": "work"
+                    },
+                    {
+                      "type": "recording"
+                    },
+                    {
+                      "type": "review"
+                    }
+                  ],
+                  "name": "reference",
+                  "type": "reference"
+                }
+              ],
+              "name": "internalLink",
+              "type": "object"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Strong"
+            },
+            {
+              "value": "em",
+              "title": "Emphasis"
+            },
+            {
+              "value": "underline",
+              "title": "Underline"
+            },
+            {
+              "value": "strike-through",
+              "title": "Strikethrough"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bullet"
+          },
+          {
+            "value": "number",
+            "title": "Numbered"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normal"
+          },
+          {
+            "value": "h2",
+            "title": "H2"
+          },
+          {
+            "value": "h3",
+            "title": "H3"
+          },
+          {
+            "value": "h4",
+            "title": "H4"
+          },
+          {
+            "value": "blockquote",
+            "title": "Quote"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "caption",
+            "type": "string"
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alt Text"
+          }
+        ],
+        "type": "image"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array"
+  }
+]

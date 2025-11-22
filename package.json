@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "del": "SANITY_TOKEN=\"sksGM87YaViXHiC597WidKxImu3w8QcxsewBORz4o0e49ay9s8tucbBqHFYXWJeDFVUu6JPi5N0vSnBpDbbssem4bDZU0tbn6EaahLeu6hGOAcYaleeHhO0Ymww6Bb6k83xppHsfAQ5mYQaEx1wwBTf6IivJqSxKfcFTm2qIh3WD9W9QBDQw\" node scripts/delete-works-instruments.mjs"
   },
   "dependencies": {
+    "@portabletext/block-tools": "^4.1.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.18.0",
+    "jsdom": "^27.2.0",
     "next": "16.0.3",
     "next-sanity": "^11.6.8",
     "react": "19.2.0",
@@ -21,6 +24,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
+    "@sanity/client": "^7.13.0",
+    "@sanity/schema": "^4.18.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
