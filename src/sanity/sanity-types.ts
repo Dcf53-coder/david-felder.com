@@ -484,31 +484,43 @@ export type AllSanitySchemaTypes = BlockContent | AboutPage | SanityImageCrop | 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/app/works/page.tsx
 // Variable: WORKS_LISTING_QUERY
-// Query: *[_type == "work" && !defined(parent)]{    _id,  title,  slug,  completionDate,  duration,  instrumentation[] {    _key,    instrument -> { name }  },  "children": *[_type == "work" && parent._ref == ^._id]{      _id,  title,  slug,  completionDate,  duration,  instrumentation[] {    _key,    instrument -> { name }  }  }}
+// Query: *[_type == "work" && !defined(parent)]{    _id,  title,  slug,  completionDate,  isCompleted,  duration,  instrumentation[] {    _key,    quantity,    instrument -> { name }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  inlineNotes,  commissionInfo,  "children": *[_type == "work" && parent._ref == ^._id]{      _id,  title,  slug,  completionDate,  isCompleted,  duration,  instrumentation[] {    _key,    quantity,    instrument -> { name }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  inlineNotes,  commissionInfo  }}
 export type WORKS_LISTING_QUERYResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
   completionDate: string | null;
+  isCompleted: boolean | null;
   duration: string | null;
   instrumentation: Array<{
     _key: string;
+    quantity: number | null;
     instrument: {
       name: string | null;
     } | null;
   }> | null;
+  useAbbreviatedInstrumentation: boolean | null;
+  abbreviatedInstrumentation: string | null;
+  inlineNotes: string | null;
+  commissionInfo: string | null;
   children: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
     completionDate: string | null;
+    isCompleted: boolean | null;
     duration: string | null;
     instrumentation: Array<{
       _key: string;
+      quantity: number | null;
       instrument: {
         name: string | null;
       } | null;
     }> | null;
+    useAbbreviatedInstrumentation: boolean | null;
+    abbreviatedInstrumentation: string | null;
+    inlineNotes: string | null;
+    commissionInfo: string | null;
   }>;
 }>;
 
@@ -516,6 +528,6 @@ export type WORKS_LISTING_QUERYResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"work\" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  duration,\n  instrumentation[] {\n    _key,\n    instrument -> { name }\n  }\n,\n  \"children\": *[_type == \"work\" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  duration,\n  instrumentation[] {\n    _key,\n    instrument -> { name }\n  }\n\n  }\n}": WORKS_LISTING_QUERYResult;
+    "*[_type == \"work\" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n,\n  \"children\": *[_type == \"work\" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n\n  }\n}": WORKS_LISTING_QUERYResult;
   }
 }

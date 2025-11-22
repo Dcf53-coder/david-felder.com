@@ -22,11 +22,17 @@ const worksListingFields = `
   title,
   slug,
   completionDate,
+  isCompleted,
   duration,
   instrumentation[] {
     _key,
+    quantity,
     instrument -> { name }
-  }
+  },
+  useAbbreviatedInstrumentation,
+  abbreviatedInstrumentation,
+  inlineNotes,
+  commissionInfo
 `
 const WORKS_LISTING_QUERY = defineQuery(`*[_type == "work" && !defined(parent)]{
   ${worksListingFields},

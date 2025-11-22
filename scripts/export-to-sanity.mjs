@@ -472,7 +472,7 @@ function exportWorks(assetsMap) {
       },
       duration: data.duration || undefined,
       isCompleted: data.completedQ === '1',
-      completionDate: formatDate(data.completionDates),
+      completionDate: data.completionDates || undefined,
       useAbbreviatedInstrumentation: data.abbreviatedInstrumentationQ === '1',
       abbreviatedInstrumentation: data.abbreviatedInstrumentation || undefined,
       hasAlternativeInstrumentation: data.alternativeInstrumentationQ === '1',
