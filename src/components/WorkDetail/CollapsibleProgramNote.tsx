@@ -1,8 +1,5 @@
-"use client";
-
-import { useState, useRef, useEffect, FC } from "react";
+import { FC } from "react";
 import { RichText } from "@/components/RichText";
-import { join } from "@/utils/join";
 import { WorkDetailData } from "./types";
 
 interface CollapsibleProgramNoteProps {
@@ -12,48 +9,24 @@ interface CollapsibleProgramNoteProps {
 export const CollapsibleProgramNote: FC<CollapsibleProgramNoteProps> = ({
   programNote,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [needsClamp, setNeedsClamp] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const checkOverflow = () => {
-      if (contentRef.current) {
-        const lineHeight = parseFloat(
-          getComputedStyle(contentRef.current).lineHeight
-        );
-        const maxHeight = lineHeight * 5;
-        setNeedsClamp(contentRef.current.scrollHeight > maxHeight);
-      }
-    };
-
-    checkOverflow();
-    window.addEventListener("resize", checkOverflow);
-    return () => window.removeEventListener("resize", checkOverflow);
-  }, [programNote]);
-
   if (!programNote) {
     return null;
   }
 
   return (
-    <div>
-      <RichText
-        value={programNote}
-        ref={contentRef}
-        className={join(
-          "prose-lg prose-gray max-w-none",
-          !isExpanded && needsClamp ? "line-clamp-5" : undefined
-        )}
-      />
-      {needsClamp && (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-4 text-sm font-mono uppercase tracking-wider text-accent hover:text-accent/80 transition-colors"
-        >
-          {isExpanded ? "Show less" : "Read more"}
-        </button>
-      )}
-    </div>
+    <details className="group">
+      <summary className="list-none cursor-pointer [&::-webkit-details-marker]:hidden">
+        <RichText
+          value={programNote}
+          className="prose-lg prose-gray max-w-none line-clamp-5 group-open:line-clamp-none"
+        />
+        <span className="mt-4 block text-sm font-mono uppercase tracking-wider text-accent hover:text-accent/80 transition-colors group-open:hidden">
+          Read more
+        </span>
+        <span className="mt-4 hidden text-sm font-mono uppercase tracking-wider text-accent hover:text-accent/80 transition-colors group-open:block">
+          Show less
+        </span>
+      </summary>
+    </details>
   );
 };

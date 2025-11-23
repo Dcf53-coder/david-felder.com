@@ -12,7 +12,7 @@ interface InfoBlockProps {
 
 export const InfoBlock: FC<InfoBlockProps> = ({ label, value, className, note }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [needsClamp, setNeedsClamp] = useState(false);
+  const [needsClamp, setNeedsClamp] = useState<boolean | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,14 +36,14 @@ export const InfoBlock: FC<InfoBlockProps> = ({ label, value, className, note })
       <div
         className={join(
           "bg-gray-50 rounded-lg p-5 flex-1",
-          needsClamp && "cursor-pointer hover:bg-gray-100 transition-colors"
+          needsClamp === true && "cursor-pointer hover:bg-gray-100 transition-colors"
         )}
-        onClick={needsClamp ? () => setIsModalOpen(true) : undefined}
+        onClick={needsClamp === true ? () => setIsModalOpen(true) : undefined}
       >
         <span className="block text-sm font-mono uppercase tracking-wider text-accent mb-2">
           {label}
         </span>
-        <div ref={contentRef} className={needsClamp ? "line-clamp-6" : undefined}>
+        <div ref={contentRef} className={needsClamp === false ? undefined : "line-clamp-6"}>
           {value && (
             <p className={join("text-lg font-light text-gray-800", className)}>{value}</p>
           )}
@@ -51,11 +51,6 @@ export const InfoBlock: FC<InfoBlockProps> = ({ label, value, className, note })
             <div className="text-lg text-gray-700">{note}</div>
           )}
         </div>
-        {needsClamp && (
-          <span className="text-sm font-mono uppercase tracking-wider text-gray-800 mt-2 block text-right">
-            Read more
-          </span>
-        )}
       </div>
 
       {/* Modal */}
