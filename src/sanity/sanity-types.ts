@@ -482,9 +482,14 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes = BlockContent | AboutPage | SanityImageCrop | SanityImageHotspot | Performance | Work | Publisher | Review | Slug | Recording | Instrument | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/app/works/[slug]/page.tsx
+// Source: ./src/app/(site)/works/[slug]/page.tsx
+// Variable: ALL_WORK_SLUGS_QUERY
+// Query: *[_type == "work" && defined(slug.current)]{  "slug": slug.current}
+export type ALL_WORK_SLUGS_QUERYResult = Array<{
+  slug: string | null;
+}>;
 // Variable: WORK_DETAIL_QUERY
-// Query: *[_type == "work" && slug.current == $slug][0]{  _id,  title,  slug,  completionDate,  isCompleted,  duration,  // Instrumentation  instrumentation[] {    _key,    quantity,    instrument -> { name, abbreviation }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  hasAlternativeInstrumentation,  alternativeInstrumentation[] {    _key,    quantity,    instrument -> { name, abbreviation }  },  // Notes and descriptions  inlineNotes,  programNote,  miscellaneousNotes,  // Commission info  commissionInfo,  dedication,  // Electronics  hasElectronics,  electronicsDescription,  // Media  soundCloudEmbedUrl,  audio[] {    _key,    title,    date,    performers,    location,    credits,    "url": asset->url  },  videos[] {    _key,    title,    date,    performers,    location,    credits,    "url": asset->url  },  images[] {    _key,    date,    performers,    location,    credits,    asset -> {      _id,      url,      metadata {        dimensions {          width,          height,          aspectRatio        },        lqip      }    }  },  isOnCd,  cd -> {    _id,    title,    slug,    recordLabel,    albumArt {      asset -> {        _id,        url,        metadata {          lqip        }      }    }  },  // Publication info  isPublished,  publisher -> {    name,    website  },  publisherLink,  scoreSampleLink,  // Downloads  score {    "url": asset->url,    "filename": asset->originalFilename  },  downloads[] {    _key,    "url": asset->url,    "filename": asset->originalFilename  },  isPasswordProtected,  publicDownloads[] {    _key,    "url": asset->url,    "filename": asset->originalFilename  },  // Parent/children relationships  parent -> {    _id,    title,    slug  },  "children": *[_type == "work" && parent._ref == ^._id] | order(title asc) {    _id,    title,    slug,    duration,    instrumentation[] {      _key,      quantity,      instrument -> { name }    },    useAbbreviatedInstrumentation,    abbreviatedInstrumentation  }}
+// Query: *[_type == "work" && slug.current == $slug][0]{  _id,  title,  slug,  completionDate,  isCompleted,  duration,  // Instrumentation  instrumentation[] {    _key,    quantity,    instrument -> { name, abbreviation }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  hasAlternativeInstrumentation,  alternativeInstrumentation[] {    _key,    quantity,    instrument -> { name, abbreviation }  },  // Notes and descriptions  inlineNotes,  programNote,  miscellaneousNotes,  // Commission info  commissionInfo,  dedication,  // Electronics  hasElectronics,  electronicsDescription,  // Media  soundCloudEmbedUrl,  audio[] {    _key,    url,    title,    date,    performers,    location,    credits  },  videos[] {    _key,    url,    title,    date,    performers,    location,    credits  },  images[] {    _key,    date,    performers,    location,    credits,    asset -> {      _id,      url,      metadata {        dimensions {          width,          height,          aspectRatio        },        lqip      }    }  },  isOnCd,  cd -> {    _id,    title,    slug,    recordLabel,    albumArt {      asset -> {        _id,        url,        metadata {          lqip        }      }    }  },  // Publication info  isPublished,  publisher -> {    name,    website  },  publisherLink,  scoreSampleLink,  // Downloads  score {    "url": asset->url,    "filename": asset->originalFilename  },  downloads[] {    _key,    "url": asset->url,    "filename": asset->originalFilename  },  isPasswordProtected,  publicDownloads[] {    _key,    "url": asset->url,    "filename": asset->originalFilename  },  // Parent/children relationships  parent -> {    _id,    title,    slug  },  "children": *[_type == "work" && parent._ref == ^._id] | order(title asc) {    _id,    title,    slug,    duration,    instrumentation[] {      _key,      quantity,      instrument -> { name }    },    useAbbreviatedInstrumentation,    abbreviatedInstrumentation  }}
 export type WORK_DETAIL_QUERYResult = {
   _id: string;
   title: string | null;
@@ -521,21 +526,21 @@ export type WORK_DETAIL_QUERYResult = {
   soundCloudEmbedUrl: string | null;
   audio: Array<{
     _key: string;
+    url: null;
     title: string | null;
     date: string | null;
     performers: string | null;
     location: string | null;
     credits: string | null;
-    url: string | null;
   }> | null;
   videos: Array<{
     _key: string;
+    url: null;
     title: string | null;
     date: string | null;
     performers: string | null;
     location: string | null;
     credits: string | null;
-    url: string | null;
   }> | null;
   images: Array<{
     _key: string;
@@ -616,7 +621,7 @@ export type WORK_DETAIL_QUERYResult = {
   }>;
 } | null;
 
-// Source: ./src/app/works/page.tsx
+// Source: ./src/app/(site)/works/page.tsx
 // Variable: WORKS_LISTING_QUERY
 // Query: *[_type == "work" && !defined(parent)]{    _id,  title,  slug,  completionDate,  isCompleted,  duration,  instrumentation[] {    _key,    quantity,    instrument -> { name }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  inlineNotes,  commissionInfo,  "children": *[_type == "work" && parent._ref == ^._id]{      _id,  title,  slug,  completionDate,  isCompleted,  duration,  instrumentation[] {    _key,    quantity,    instrument -> { name }  },  useAbbreviatedInstrumentation,  abbreviatedInstrumentation,  inlineNotes,  commissionInfo  }}
 export type WORKS_LISTING_QUERYResult = Array<{
@@ -662,7 +667,8 @@ export type WORKS_LISTING_QUERYResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"work\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n\n  // Instrumentation\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  hasAlternativeInstrumentation,\n  alternativeInstrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n\n  // Notes and descriptions\n  inlineNotes,\n  programNote,\n  miscellaneousNotes,\n\n  // Commission info\n  commissionInfo,\n  dedication,\n\n  // Electronics\n  hasElectronics,\n  electronicsDescription,\n\n  // Media\n  soundCloudEmbedUrl,\n  audio[] {\n    _key,\n    title,\n    date,\n    performers,\n    location,\n    credits,\n    \"url\": asset->url\n  },\n  videos[] {\n    _key,\n    title,\n    date,\n    performers,\n    location,\n    credits,\n    \"url\": asset->url\n  },\n  images[] {\n    _key,\n    date,\n    performers,\n    location,\n    credits,\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  isOnCd,\n  cd -> {\n    _id,\n    title,\n    slug,\n    recordLabel,\n    albumArt {\n      asset -> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    }\n  },\n\n  // Publication info\n  isPublished,\n  publisher -> {\n    name,\n    website\n  },\n  publisherLink,\n  scoreSampleLink,\n\n  // Downloads\n  score {\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  downloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  isPasswordProtected,\n  publicDownloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n\n  // Parent/children relationships\n  parent -> {\n    _id,\n    title,\n    slug\n  },\n  \"children\": *[_type == \"work\" && parent._ref == ^._id] | order(title asc) {\n    _id,\n    title,\n    slug,\n    duration,\n    instrumentation[] {\n      _key,\n      quantity,\n      instrument -> { name }\n    },\n    useAbbreviatedInstrumentation,\n    abbreviatedInstrumentation\n  }\n}": WORK_DETAIL_QUERYResult;
+    "*[_type == \"work\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_WORK_SLUGS_QUERYResult;
+    "*[_type == \"work\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n\n  // Instrumentation\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  hasAlternativeInstrumentation,\n  alternativeInstrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n\n  // Notes and descriptions\n  inlineNotes,\n  programNote,\n  miscellaneousNotes,\n\n  // Commission info\n  commissionInfo,\n  dedication,\n\n  // Electronics\n  hasElectronics,\n  electronicsDescription,\n\n  // Media\n  soundCloudEmbedUrl,\n  audio[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  videos[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  images[] {\n    _key,\n    date,\n    performers,\n    location,\n    credits,\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  isOnCd,\n  cd -> {\n    _id,\n    title,\n    slug,\n    recordLabel,\n    albumArt {\n      asset -> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    }\n  },\n\n  // Publication info\n  isPublished,\n  publisher -> {\n    name,\n    website\n  },\n  publisherLink,\n  scoreSampleLink,\n\n  // Downloads\n  score {\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  downloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  isPasswordProtected,\n  publicDownloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n\n  // Parent/children relationships\n  parent -> {\n    _id,\n    title,\n    slug\n  },\n  \"children\": *[_type == \"work\" && parent._ref == ^._id] | order(title asc) {\n    _id,\n    title,\n    slug,\n    duration,\n    instrumentation[] {\n      _key,\n      quantity,\n      instrument -> { name }\n    },\n    useAbbreviatedInstrumentation,\n    abbreviatedInstrumentation\n  }\n}": WORK_DETAIL_QUERYResult;
     "*[_type == \"work\" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n,\n  \"children\": *[_type == \"work\" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n\n  }\n}": WORKS_LISTING_QUERYResult;
   }
 }

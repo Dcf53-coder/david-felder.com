@@ -184,6 +184,58 @@ function isImageFile(filename) {
   return ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(ext);
 }
 
+// Check if file is an embedded asset JSON file
+function isEmbeddedAssetJson(filename) {
+  return filename.endsWith('.json');
+}
+
+// Read embedded asset JSON file and extract URL
+function getEmbeddedAssetUrl(volume, filename) {
+  const volumePath = VOLUME_PATHS[volume];
+  if (!volumePath) {
+    return null;
+  }
+  const fullPath = path.join(CRAFT_ASSETS_PATH, volumePath, filename);
+
+  try {
+    if (!fs.existsSync(fullPath)) {
+      console.error(`  Embedded asset file not found: ${fullPath}`);
+      return null;
+    }
+
+    const content = fs.readFileSync(fullPath, 'utf-8');
+    const data = JSON.parse(content);
+
+    // Return the original URL from the embedded asset
+    return data.url || null;
+  } catch (err) {
+    console.error(`  Error reading embedded asset ${filename}:`, err.message);
+    return null;
+  }
+}
+
+// Get title from embedded asset JSON file
+function getEmbeddedAssetTitle(volume, filename) {
+  const volumePath = VOLUME_PATHS[volume];
+  if (!volumePath) {
+    return null;
+  }
+  const fullPath = path.join(CRAFT_ASSETS_PATH, volumePath, filename);
+
+  try {
+    if (!fs.existsSync(fullPath)) {
+      return null;
+    }
+
+    const content = fs.readFileSync(fullPath, 'utf-8');
+    const data = JSON.parse(content);
+
+    return data.title || null;
+  } catch (err) {
+    return null;
+  }
+}
+
 // Generate slug from title
 function slugify(text) {
   if (!text) return '';
@@ -570,21 +622,49 @@ function exportWorks(assetsMap) {
           _sanityAsset: buildSanityAssetUrl(asset.volume, asset.filename, false),
         };
       }
+      // Audio - these are embedded asset JSON files containing SoundCloud URLs
       if (workAssets.audio && workAssets.audio.length > 0) {
-        doc.audio = workAssets.audio.map(asset => ({
-          _type: 'file',
-          _key: crypto.randomBytes(6).toString('hex'),
-          _sanityAsset: buildSanityAssetUrl(asset.volume, asset.filename, false),
-          title: asset.title || undefined,
-        }));
+        const audioItems = [];
+        for (const asset of workAssets.audio) {
+          if (isEmbeddedAssetJson(asset.filename)) {
+            // Read the JSON file to get the actual URL
+            const url = getEmbeddedAssetUrl(asset.volume, asset.filename);
+            const embedTitle = getEmbeddedAssetTitle(asset.volume, asset.filename);
+            if (url) {
+              audioItems.push({
+                _type: 'audioEmbed',
+                _key: crypto.randomBytes(6).toString('hex'),
+                url: url,
+                title: asset.title || embedTitle || undefined,
+              });
+            }
+          }
+        }
+        if (audioItems.length > 0) {
+          doc.audio = audioItems;
+        }
       }
+      // Videos - these are embedded asset JSON files containing YouTube/Vimeo URLs
       if (workAssets.videos && workAssets.videos.length > 0) {
-        doc.videos = workAssets.videos.map(asset => ({
-          _type: 'file',
-          _key: crypto.randomBytes(6).toString('hex'),
-          _sanityAsset: buildSanityAssetUrl(asset.volume, asset.filename, false),
-          title: asset.title || undefined,
-        }));
+        const videoItems = [];
+        for (const asset of workAssets.videos) {
+          if (isEmbeddedAssetJson(asset.filename)) {
+            // Read the JSON file to get the actual URL
+            const url = getEmbeddedAssetUrl(asset.volume, asset.filename);
+            const embedTitle = getEmbeddedAssetTitle(asset.volume, asset.filename);
+            if (url) {
+              videoItems.push({
+                _type: 'videoEmbed',
+                _key: crypto.randomBytes(6).toString('hex'),
+                url: url,
+                title: asset.title || embedTitle || undefined,
+              });
+            }
+          }
+        }
+        if (videoItems.length > 0) {
+          doc.videos = videoItems;
+        }
       }
       if (workAssets.images && workAssets.images.length > 0) {
         doc.images = workAssets.images.map(asset => ({

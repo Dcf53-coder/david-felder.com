@@ -12,10 +12,10 @@ export const ImagesSection: FC<ImagesSectionProps> = ({ images }) => {
 
   return (
     <>
-      <div className="space-y-4">
-        <h3 className="text-sm font-mono uppercase tracking-wider text-accent">
+      <div className="space-y-8">
+        <h2 className="text-3xl font-black tracking-tight">
           Gallery
-        </h3>
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {images.map((image) => (
             <ImageThumbnail

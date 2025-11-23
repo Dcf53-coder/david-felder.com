@@ -188,14 +188,20 @@ export const work = defineType({
       title: 'Audio',
       type: 'array',
       group: 'media',
-      description: 'Share one or more recordings of this piece.',
+      description: 'Share one or more audio recordings. Paste SoundCloud URLs or other audio embed links.',
       of: [
         {
-          type: 'file',
-          options: {
-            accept: 'audio/*',
-          },
+          type: 'object',
+          name: 'audioEmbed',
+          title: 'Audio Embed',
           fields: [
+            {
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              description: 'Paste a SoundCloud URL (e.g., https://soundcloud.com/david-felder/track-name)',
+              validation: (Rule) => Rule.required(),
+            },
             {
               name: 'title',
               title: 'Title',
@@ -222,6 +228,18 @@ export const work = defineType({
               type: 'string',
             },
           ],
+          preview: {
+            select: {
+              title: 'title',
+              url: 'url',
+            },
+            prepare({ title, url }) {
+              return {
+                title: title || 'Audio Embed',
+                subtitle: url,
+              }
+            },
+          },
         },
       ],
     }),
@@ -230,11 +248,20 @@ export const work = defineType({
       title: 'Videos',
       type: 'array',
       group: 'media',
-      description: 'Share one or more videos of this piece.',
+      description: 'Share one or more videos. Paste YouTube or Vimeo URLs.',
       of: [
         {
-          type: 'file',
+          type: 'object',
+          name: 'videoEmbed',
+          title: 'Video Embed',
           fields: [
+            {
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              description: 'Paste a YouTube or Vimeo URL (e.g., https://www.youtube.com/watch?v=...)',
+              validation: (Rule) => Rule.required(),
+            },
             {
               name: 'title',
               title: 'Title',
@@ -261,6 +288,18 @@ export const work = defineType({
               type: 'string',
             },
           ],
+          preview: {
+            select: {
+              title: 'title',
+              url: 'url',
+            },
+            prepare({ title, url }) {
+              return {
+                title: title || 'Video Embed',
+                subtitle: url,
+              }
+            },
+          },
         },
       ],
     }),

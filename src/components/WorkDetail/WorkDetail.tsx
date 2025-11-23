@@ -3,18 +3,15 @@ import { formatInstrumentation } from "@/utils/format-instrumentation";
 import { RichText } from "@/components/RichText";
 import Link from "next/link";
 import { FC } from "react";
-import { AudioSection } from "./sections/AudioSection";
 import { ChildWorksSection } from "./sections/ChildWorksSection";
 import { DownloadsSection } from "./sections/DownloadsSection";
 import { ImagesSection } from "./sections/ImagesSection";
+import { MediaSection } from "./sections/MediaSection";
 import { PublicationSection } from "./sections/PublicationSection";
-import { RecordingSection } from "./sections/RecordingSection";
-import { VideosSection } from "./sections/VideosSection";
 import { WorkDetailData } from "./types";
 import { InfoBlock } from "./InfoBlock";
 import { CollapsibleProgramNote } from "./CollapsibleProgramNote";
 import { Section } from "./Section";
-import { SoundCloudEmbed } from "./SoundCloudEmbed";
 
 interface WorkDetailProps {
   work: WorkDetailData;
@@ -26,11 +23,6 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
   const isInProgress = !work.isCompleted;
 
   // Check for content sections
-  const hasMedia =
-    work.soundCloudEmbedUrl ||
-    (work.audio && work.audio.length > 0) ||
-    (work.videos && work.videos.length > 0) ||
-    (work.images && work.images.length > 0);
   const hasChildren = work.children && work.children.length > 0;
   const hasDownloads =
     work.score?.url ||
@@ -52,7 +44,7 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
 
         {/* Header */}
         <header className="mb-16">
-          <div className="flex flex-col gap-4 md:my-24">
+          <div className="flex flex-col gap-4 md:mt-24 md:mb-8">
             <time
               className={`text-lg font-mono uppercase tracking-wider ${isInProgress ? "italic" : ""}`}
             >
@@ -71,8 +63,17 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
                 <span className="font-medium">{work.parent.title}</span>
               </Link>
             )}
+
             <div className="h-2 w-32 bg-gray-900 mt-2" />
+
           </div>
+
+          {/* Commission */}
+          {work.commissionInfo && (
+            <div className="text-2xl text-balance">
+              {work.commissionInfo}
+            </div>
+          )}
 
           {/* Quick facts */}
           <div className="mt-10 flex flex-col md:flex-row gap-6">
@@ -96,14 +97,7 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
 
         {/* Main content grid */}
         <div className="space-y-16">
-          {/* Commission Info */}
-          {work.commissionInfo && (
-            <Section title="Commission">
-              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-                {work.commissionInfo}
-              </p>
-            </Section>
-          )}
+
 
           {/* Program Note */}
           {work.programNote && (
@@ -133,55 +127,36 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
             <ChildWorksSection children={work.children} />
           )}
 
-          {/* Media sections */}
-          {hasMedia && (
-            <div className="space-y-12">
-              <h2 className="text-3xl font-black tracking-tight border-b border-gray-200 pb-4">
-                Media
-              </h2>
+          {/* Media section (streaming: SoundCloud, audio, videos) */}
+          <MediaSection
+            soundCloudEmbedUrl={work.soundCloudEmbedUrl}
+            audio={work.audio}
+            videos={work.videos}
+          />
 
-              {/* SoundCloud embed */}
-              {work.soundCloudEmbedUrl && (
-                <SoundCloudEmbed url={work.soundCloudEmbedUrl} />
-              )}
-
-              {/* Audio files */}
-              {work.audio && work.audio.length > 0 && (
-                <AudioSection audio={work.audio} />
-              )}
-
-              {/* Videos */}
-              {work.videos && work.videos.length > 0 && (
-                <VideosSection videos={work.videos} />
-              )}
-
-              {/* Images */}
-              {work.images && work.images.length > 0 && (
-                <ImagesSection images={work.images} />
-              )}
-            </div>
-          )}
-
-          {/* Recording (CD) */}
-          {work.isOnCd && work.cd && <RecordingSection cd={work.cd} />}
-
-          {/* Publication info */}
-          {work.isPublished && (
-            <PublicationSection
-              publisher={work.publisher}
-              publisherLink={work.publisherLink}
-              scoreSampleLink={work.scoreSampleLink}
-            />
-          )}
+          {/* Publication info (two columns: score + recordings) */}
+          <PublicationSection
+            publisher={work.publisher}
+            publisherLink={work.publisherLink}
+            scoreSampleLink={work.scoreSampleLink}
+            isOnCd={work.isOnCd}
+            cd={work.cd}
+          />
 
           {/* Downloads */}
           {hasDownloads && (
             <DownloadsSection
+              workId={work._id}
               score={work.score}
               publicDownloads={work.publicDownloads}
               downloads={work.downloads}
               isPasswordProtected={work.isPasswordProtected}
             />
+          )}
+
+          {/* Image Gallery at the bottom */}
+          {work.images && work.images.length > 0 && (
+            <ImagesSection images={work.images} />
           )}
         </div>
       </div>

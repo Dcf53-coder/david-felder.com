@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { DownloadItem } from "../types";
 
 interface DownloadsSectionProps {
+  workId: string;
   score: {
     url: string | null;
     filename: string | null;
@@ -14,6 +15,7 @@ interface DownloadsSectionProps {
 }
 
 export const DownloadsSection: FC<DownloadsSectionProps> = ({
+  workId,
   score,
   publicDownloads,
   downloads,
@@ -22,34 +24,109 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
   const [showProtected, setShowProtected] = useState(false);
   const [password, setPassword] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const hasProtectedDownloads =
-    isPasswordProtected && downloads && downloads.length > 0;
+    isPasswordProtected && ((downloads && downloads.length > 0) || score?.url);
 
-  const handleUnlock = (e: React.FormEvent) => {
+  // Check if user is already authenticated on mount
+  useEffect(() => {
+    if (!hasProtectedDownloads) {
+      setIsCheckingAuth(false);
+      return;
+    }
+
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/verify-password");
+        const data = await response.json();
+        if (data.authenticated) {
+          setIsUnlocked(true);
+        }
+      } catch (err) {
+        // Silently fail - user will need to enter password
+        console.error("Auth check failed:", err);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, [hasProtectedDownloads]);
+
+  const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, this would verify against the server
-    // For now, we just show the downloads
-    if (password) {
-      setIsUnlocked(true);
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/verify-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password,
+          workId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsUnlocked(true);
+        setPassword("");
+      } else {
+        setError(data.error || "Incorrect password");
+      }
+    } catch (err) {
+      console.error("Password verification failed:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  // Show loading state while checking auth
+  if (isCheckingAuth && hasProtectedDownloads) {
+    return (
+      <section>
+        <h2 className="text-3xl font-black tracking-tight mb-6">Downloads</h2>
+        <div className="space-y-4">
+          {/* Public downloads are always shown */}
+          {publicDownloads &&
+            publicDownloads.map((download) =>
+              download.url ? (
+                <DownloadCard
+                  key={download._key}
+                  url={download.url}
+                  filename={download.filename || "Download"}
+                  icon={<FileIcon />}
+                />
+              ) : null
+            )}
+          {/* Loading placeholder for protected content */}
+          <div className="bg-gray-100 rounded-xl p-6 animate-pulse">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gray-300" />
+              <div className="flex-1">
+                <div className="h-4 bg-gray-300 rounded w-48 mb-2" />
+                <div className="h-3 bg-gray-200 rounded w-32" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
       <h2 className="text-3xl font-black tracking-tight mb-6">Downloads</h2>
       <div className="space-y-4">
-        {/* Score */}
-        {score?.url && (
-          <DownloadCard
-            url={score.url}
-            filename={score.filename || "Score"}
-            label="Score (PDF)"
-            icon={<ScoreIcon />}
-          />
-        )}
-
-        {/* Public downloads */}
+        {/* Public downloads - always visible */}
         {publicDownloads &&
           publicDownloads.map((download) =>
             download.url ? (
@@ -62,7 +139,30 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
             ) : null
           )}
 
-        {/* Protected downloads */}
+        {/* Score - shown if not password protected OR if unlocked */}
+        {score?.url && (!isPasswordProtected || isUnlocked) && (
+          <DownloadCard
+            url={score.url}
+            filename={score.filename || "Score"}
+            label="Score (PDF)"
+            icon={<ScoreIcon />}
+          />
+        )}
+
+        {/* Protected downloads - shown only when unlocked */}
+        {isUnlocked &&
+          downloads?.map((download) =>
+            download.url ? (
+              <DownloadCard
+                key={download._key}
+                url={download.url}
+                filename={download.filename || "Download"}
+                icon={<FileIcon />}
+              />
+            ) : null
+          )}
+
+        {/* Password prompt for protected downloads */}
         {hasProtectedDownloads && !isUnlocked && (
           <div className="bg-gray-100 rounded-xl p-6">
             <div className="flex items-center gap-3 mb-4">
@@ -74,8 +174,8 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
                   Password Protected Downloads
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {downloads?.length} additional file
-                  {downloads?.length !== 1 ? "s" : ""} available
+                  {(downloads?.length ?? 0) + (score?.url ? 1 : 0)} file
+                  {(downloads?.length ?? 0) + (score?.url ? 1 : 0) !== 1 ? "s" : ""} available
                 </p>
               </div>
             </div>
@@ -88,38 +188,44 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
                 Enter Password &rarr;
               </button>
             ) : (
-              <form onSubmit={handleUnlock} className="flex gap-3">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors font-medium"
-                >
-                  Unlock
-                </button>
+              <form onSubmit={handleUnlock} className="space-y-3">
+                <div className="flex gap-3">
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setError(null);
+                    }}
+                    placeholder="Enter password"
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:opacity-50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !password}
+                    className="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? "Checking..." : "Unlock"}
+                  </button>
+                </div>
+                {error && (
+                  <p className="text-sm text-red-600">{error}</p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Please{" "}
+                  <a
+                    href="mailto:felder@buffalo.edu"
+                    className="text-accent hover:underline"
+                  >
+                    contact the composer
+                  </a>{" "}
+                  for access to these files.
+                </p>
               </form>
             )}
           </div>
         )}
-
-        {/* Unlocked protected downloads */}
-        {hasProtectedDownloads &&
-          isUnlocked &&
-          downloads?.map((download) =>
-            download.url ? (
-              <DownloadCard
-                key={download._key}
-                url={download.url}
-                filename={download.filename || "Download"}
-                icon={<FileIcon />}
-              />
-            ) : null
-          )}
       </div>
     </section>
   );

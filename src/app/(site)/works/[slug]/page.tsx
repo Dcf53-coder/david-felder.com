@@ -50,21 +50,21 @@ const WORK_DETAIL_QUERY = defineQuery(`*[_type == "work" && slug.current == $slu
   soundCloudEmbedUrl,
   audio[] {
     _key,
+    url,
     title,
     date,
     performers,
     location,
-    credits,
-    "url": asset->url
+    credits
   },
   videos[] {
     _key,
+    url,
     title,
     date,
     performers,
     location,
-    credits,
-    "url": asset->url
+    credits
   },
   images[] {
     _key,
@@ -157,9 +157,11 @@ interface WorkDetailPageProps {
 export async function generateStaticParams() {
   const works = await client.fetch(ALL_WORK_SLUGS_QUERY);
 
-  return works.map((work: { slug: string }) => ({
-    slug: work.slug,
-  }));
+  return works
+    .filter((work): work is { slug: string } => work.slug !== null)
+    .map((work) => ({
+      slug: work.slug,
+    }));
 }
 
 export default async function WorkDetailPage({ params }: WorkDetailPageProps) {

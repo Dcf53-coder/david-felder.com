@@ -2,6 +2,7 @@
 
 import { FC } from "react";
 import { VideoItem } from "../types";
+import { getEmbedInfo } from "@/utils/embed-providers";
 
 interface VideosSectionProps {
   videos: VideoItem[];
@@ -10,14 +11,9 @@ interface VideosSectionProps {
 export const VideosSection: FC<VideosSectionProps> = ({ videos }) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-mono uppercase tracking-wider text-accent">
-        Video Recordings
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {videos.map((item) => (
-          <VideoCard key={item._key} item={item} />
-        ))}
-      </div>
+      {videos.map((item) => (
+        <VideoCard key={item._key} item={item} />
+      ))}
     </div>
   );
 };
@@ -25,32 +21,59 @@ export const VideosSection: FC<VideosSectionProps> = ({ videos }) => {
 const VideoCard: FC<{ item: VideoItem }> = ({ item }) => {
   if (!item.url) return null;
 
+  const embedInfo = getEmbedInfo(item.url);
+  const hasMetadata = item.title || item.performers || item.date || item.location || item.credits;
+
   return (
-    <div className="bg-gray-50 rounded-lg overflow-hidden">
-      <div className="aspect-video bg-gray-200">
-        <video
-          src={item.url}
-          controls
-          className="w-full h-full object-cover"
-          preload="metadata"
-        />
+    <div className="space-y-3">
+      <div className="aspect-video rounded-3xl overflow-hidden bg-gray-900 shadow-lg">
+        {embedInfo.provider === "youtube" && embedInfo.embedUrl && (
+          <iframe
+            src={embedInfo.embedUrl}
+            title={item.title || "YouTube video"}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        )}
+        {embedInfo.provider === "vimeo" && embedInfo.embedUrl && (
+          <iframe
+            src={embedInfo.embedUrl}
+            title={item.title || "Vimeo video"}
+            className="w-full h-full"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        )}
+        {embedInfo.provider === "unknown" && (
+          <div className="w-full h-full flex items-center justify-center">
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-accent transition-colors"
+            >
+              View Video &rarr;
+            </a>
+          </div>
+        )}
       </div>
-      <div className="p-4">
-        <div className="flex items-baseline gap-2 mb-1">
-          <h4 className="font-semibold text-gray-900">
-            {item.title || "Untitled Video"}
-          </h4>
-          {item.date && <span className="text-sm text-gray-500">{item.date}</span>}
+      {hasMetadata && (
+        <div className="px-1">
+          {item.title && (
+            <h4 className="font-semibold text-gray-900">{item.title}</h4>
+          )}
+          {(item.performers || item.date || item.location || item.credits) && (
+            <p className="text-sm text-gray-600 mt-0.5">
+              {[item.performers, item.date, item.location, item.credits]
+                .filter(Boolean)
+                .join(" • ")}
+            </p>
+          )}
         </div>
-        {item.performers && (
-          <p className="text-sm text-gray-600">{item.performers}</p>
-        )}
-        {(item.location || item.credits) && (
-          <p className="text-xs text-gray-500 mt-1">
-            {[item.location, item.credits].filter(Boolean).join(" • ")}
-          </p>
-        )}
-      </div>
+      )}
     </div>
   );
 };

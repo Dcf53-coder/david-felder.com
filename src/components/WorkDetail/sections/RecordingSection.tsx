@@ -23,10 +23,10 @@ export const RecordingSection: FC<RecordingSectionProps> = ({ cd }) => {
   const href = cd.slug?.current ? `/recordings/${cd.slug.current}` : "#";
 
   return (
-    <section>
-      <h2 className="text-3xl font-black tracking-tight mb-6">
+    <div className="space-y-4">
+      <h3 className="text-sm font-mono uppercase tracking-wider text-accent">
         Available on Recording
-      </h2>
+      </h3>
       <Link
         href={href}
         className="flex items-center gap-6 p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
@@ -58,6 +58,6 @@ export const RecordingSection: FC<RecordingSectionProps> = ({ cd }) => {
           </span>
         </div>
       </Link>
-    </section>
+    </div>
   );
 };

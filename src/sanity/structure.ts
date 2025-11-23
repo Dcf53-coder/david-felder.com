@@ -1,4 +1,4 @@
-import { CommentIcon, DocumentsIcon, InfoOutlineIcon, LaunchIcon, PlayIcon, TiersIcon, UsersIcon, WrenchIcon } from '@sanity/icons'
+import { CogIcon, CommentIcon, DocumentsIcon, InfoOutlineIcon, LaunchIcon, PlayIcon, TiersIcon, UsersIcon } from '@sanity/icons'
 import type { StructureResolver } from 'sanity/structure'
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
@@ -17,6 +17,19 @@ export const structure: StructureResolver = (S) =>
             .schemaType('aboutPage')
             .documentId('aboutPage')
         ),
+
+      S.listItem()
+        .title('Site Settings')
+        .icon(CogIcon)
+        .schemaType('siteSettings')
+        .child(
+          S.editor()
+            .id('siteSettings')
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+        ),
+
+      S.divider(),
 
       S.listItem()
         .title('Works')
@@ -42,7 +55,7 @@ export const structure: StructureResolver = (S) =>
         .schemaType('performance')
         .child(S.documentTypeList('performance').title('Performances')),
 
-      S.divider().title('Misc.'),
+      S.divider(),
 
       S.listItem()
         .title('Instruments')
