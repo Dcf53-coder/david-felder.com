@@ -340,24 +340,6 @@ export const work = defineType({
         },
       ],
     }),
-    defineField({
-      name: 'isOnCd',
-      title: 'Published on CD?',
-      type: 'boolean',
-      group: 'media',
-      description: 'Does this piece have a recording published on CD?',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'cd',
-      title: 'CD',
-      type: 'reference',
-      to: [{ type: 'recording' }],
-      group: 'media',
-      description: 'Associate this piece with the CD on which it is published.',
-      hidden: ({ document }) => !document?.isOnCd,
-    }),
-
     // Electronics
     defineField({
       name: 'hasElectronics',

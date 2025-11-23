@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FC } from "react";
 
-interface CdData {
+interface RecordingData {
   _id: string;
   title: string | null;
   slug: { current?: string } | null;
@@ -24,21 +24,19 @@ interface PublicationSectionProps {
   } | null;
   publisherLink: string | null;
   scoreSampleLink: string | null;
-  isOnCd?: boolean | null;
-  cd?: CdData | null;
+  recordings?: RecordingData[] | null;
 }
 
 export const PublicationSection: FC<PublicationSectionProps> = ({
   publisher,
   publisherLink,
   scoreSampleLink,
-  isOnCd,
-  cd,
+  recordings,
 }) => {
   const hasPublisher = publisher?.name || publisherLink || scoreSampleLink;
-  const hasRecording = isOnCd && cd;
+  const hasRecordings = recordings && recordings.length > 0;
 
-  if (!hasPublisher && !hasRecording) return null;
+  if (!hasPublisher && !hasRecordings) return null;
 
   return (
     <section>
@@ -122,43 +120,48 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
           </div>
         )}
 
-        {/* Recording Column */}
-        {hasRecording && (
+        {/* Recordings Column */}
+        {hasRecordings && (
           <div className="bg-gray-50 rounded-xl p-6">
             <span className="block text-sm font-mono uppercase tracking-wider text-accent mb-3">
-              Recording
+              {recordings.length === 1 ? "Recording" : "Recordings"}
             </span>
-            <Link
-              href={cd.slug?.current ? `/recordings/${cd.slug.current}` : "#"}
-              className="flex items-center gap-4 group"
-            >
-              {cd.albumArt?.asset?.url && (
-                <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
-                  <img
-                    src={cd.albumArt.asset.url}
-                    alt={cd.title || "Album art"}
-                    className="w-full h-full object-cover"
-                    style={{
-                      backgroundImage: cd.albumArt.asset.metadata?.lqip
-                        ? `url(${cd.albumArt.asset.metadata.lqip})`
-                        : undefined,
-                      backgroundSize: "cover",
-                    }}
-                  />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <h4 className="text-xl font-semibold text-gray-900 group-hover:text-accent transition-colors truncate">
-                  {cd.title}
-                </h4>
-                {cd.recordLabel && (
-                  <p className="text-sm text-gray-600 truncate">{cd.recordLabel}</p>
-                )}
-                <span className="inline-block mt-2 text-sm font-mono uppercase tracking-wider text-accent">
-                  View Recording &rarr;
-                </span>
-              </div>
-            </Link>
+            <div className="space-y-4">
+              {recordings.map((recording) => (
+                <Link
+                  key={recording._id}
+                  href={recording.slug?.current ? `/recordings/${recording.slug.current}` : "#"}
+                  className="flex items-center gap-4 group"
+                >
+                  {recording.albumArt?.asset?.url && (
+                    <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
+                      <img
+                        src={recording.albumArt.asset.url}
+                        alt={recording.title || "Album art"}
+                        className="w-full h-full object-cover"
+                        style={{
+                          backgroundImage: recording.albumArt.asset.metadata?.lqip
+                            ? `url(${recording.albumArt.asset.metadata.lqip})`
+                            : undefined,
+                          backgroundSize: "cover",
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xl font-semibold text-gray-900 group-hover:text-accent transition-colors truncate">
+                      {recording.title}
+                    </h4>
+                    {recording.recordLabel && (
+                      <p className="text-sm text-gray-600 truncate">{recording.recordLabel}</p>
+                    )}
+                    <span className="inline-block mt-2 text-sm font-mono uppercase tracking-wider text-accent">
+                      View Recording &rarr;
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -139,8 +139,7 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
             publisher={work.publisher}
             publisherLink={work.publisherLink}
             scoreSampleLink={work.scoreSampleLink}
-            isOnCd={work.isOnCd}
-            cd={work.cd}
+            recordings={work.recordings}
           />
 
           {/* Downloads */}

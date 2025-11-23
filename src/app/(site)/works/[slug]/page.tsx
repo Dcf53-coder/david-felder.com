@@ -85,12 +85,18 @@ const WORK_DETAIL_QUERY = defineQuery(`*[_type == "work" && slug.current == $slu
       }
     }
   },
-  isOnCd,
-  cd -> {
+  // Recordings that feature this work (reverse lookup)
+  // Includes: direct references, references to children (for series), or references to parent
+  "recordings": *[_type == "recording" && (
+    references(^._id) ||
+    count((pieces[].piece._ref)[@ in *[_type == "work" && parent._ref == ^.^._id]._id]) > 0 ||
+    references(^.parent._ref)
+  )] | order(releaseDate desc) {
     _id,
     title,
     slug,
     recordLabel,
+    releaseDate,
     albumArt {
       asset -> {
         _id,
