@@ -1,0 +1,1209 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "description": "If this piece is part of a series, select the parent work",
+        "to": [
+          {
+            "type": "work"
+          }
+        ],
+        "name": "parent",
+        "type": "reference",
+        "title": "Parent Work (for series)"
+      },
+      {
+        "description": "The piece's duration (in minutes)",
+        "name": "duration",
+        "type": "string"
+      },
+      {
+        "initialValue": true,
+        "description": "Is the piece completed?",
+        "name": "isCompleted",
+        "type": "boolean",
+        "title": "Completed?"
+      },
+      {
+        "description": "For unfinished pieces, these may be the expected completion date(s).",
+        "name": "completionDate",
+        "type": "string",
+        "title": "Completion Date(s)"
+      },
+      {
+        "description": "What instruments are called for in the piece?",
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "instrument"
+                  }
+                ],
+                "name": "instrument",
+                "type": "reference"
+              },
+              {
+                "initialValue": 1,
+                "description": "How many of this instrument are required?",
+                "name": "quantity",
+                "type": "number"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "instrumentation",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "description": "Should an abbreviated description of the instrumentation be used in the general works list?",
+        "name": "useAbbreviatedInstrumentation",
+        "type": "boolean",
+        "title": "Use Abbreviated Instrumentation?"
+      },
+      {
+        "description": "This concise description of instrumentation will be shown in the global works list. The fully detailed instrumentation will be shown on the piece's own page. (ex. 2, 2, 2, 2 | 1, 1, 1 | hp, pno, etc.)",
+        "hidden": "conditional",
+        "name": "abbreviatedInstrumentation",
+        "type": "string"
+      },
+      {
+        "initialValue": false,
+        "description": "Are there versions of this piece for an alternative instrumentation?",
+        "name": "hasAlternativeInstrumentation",
+        "type": "boolean",
+        "title": "Alternative Instrumentation?"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "instrument"
+                  }
+                ],
+                "name": "instrument",
+                "type": "reference"
+              },
+              {
+                "initialValue": 1,
+                "description": "How many of this instrument are required?",
+                "name": "quantity",
+                "type": "number"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "alternativeInstrumentation",
+        "type": "array"
+      },
+      {
+        "description": "These notes will appear immediately after the instrumentation in the main works list.",
+        "name": "inlineNotes",
+        "type": "text"
+      },
+      {
+        "name": "programNote",
+        "type": "blockContent"
+      },
+      {
+        "description": "Notes about any texts used, credit for collaborators, etc.",
+        "name": "miscellaneousNotes",
+        "type": "blockContent"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "soundCloudEmbedUrl",
+        "type": "url",
+        "title": "SoundCloud Embed Link"
+      },
+      {
+        "description": "Share one or more audio recordings. Paste SoundCloud URLs or other audio embed links.",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^http$/",
+                              "/^https$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      },
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "description": "Paste a SoundCloud URL (e.g., https://soundcloud.com/david-felder/track-name)",
+                "name": "url",
+                "type": "url",
+                "title": "URL"
+              },
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "date",
+                "type": "string"
+              },
+              {
+                "name": "performers",
+                "type": "string"
+              },
+              {
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "audioEmbed"
+          }
+        ],
+        "name": "audio",
+        "type": "array"
+      },
+      {
+        "description": "Share one or more videos. Paste YouTube or Vimeo URLs.",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^http$/",
+                              "/^https$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      },
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "description": "Paste a YouTube or Vimeo URL (e.g., https://www.youtube.com/watch?v=...)",
+                "name": "url",
+                "type": "url",
+                "title": "URL"
+              },
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "date",
+                "type": "string"
+              },
+              {
+                "name": "performers",
+                "type": "string"
+              },
+              {
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "videoEmbed"
+          }
+        ],
+        "name": "videos",
+        "type": "array"
+      },
+      {
+        "description": "Share one or more images of this piece.",
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "date",
+                "type": "string"
+              },
+              {
+                "name": "performers",
+                "type": "string"
+              },
+              {
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "name": "credits",
+                "type": "string"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "description": "Does the piece include electronics?",
+        "name": "hasElectronics",
+        "type": "boolean",
+        "title": "Electronics?"
+      },
+      {
+        "description": "If we're not hosting the files, indicate how someone could get ahold of them.",
+        "hidden": "conditional",
+        "name": "electronicsDescription",
+        "type": "blockContent",
+        "title": "Description"
+      },
+      {
+        "rows": 3,
+        "description": "By whom was the piece commissioned, for what purpose, etc.?",
+        "name": "commissionInfo",
+        "type": "text"
+      },
+      {
+        "description": "To whom is the piece dedicated or for whom was it written?",
+        "name": "dedication",
+        "type": "string"
+      },
+      {
+        "initialValue": false,
+        "description": "Is the piece published?",
+        "name": "isPublished",
+        "type": "boolean",
+        "title": "Published?"
+      },
+      {
+        "to": [
+          {
+            "type": "publisher"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "publisher",
+        "type": "reference"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Link to the Publisher's page for this piece.",
+        "hidden": "conditional",
+        "name": "publisherLink",
+        "type": "url"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Provide a link to the publisher's score sample.",
+        "hidden": "conditional",
+        "name": "scoreSampleLink",
+        "type": "url"
+      },
+      {
+        "options": {
+          "accept": ".pdf"
+        },
+        "description": "Attach a PDF score sample",
+        "name": "score",
+        "type": "file"
+      },
+      {
+        "description": "Attach electronics files here to make them available for downloading",
+        "of": [
+          {
+            "type": "file"
+          }
+        ],
+        "name": "downloads",
+        "type": "array",
+        "title": "Electronics, Program Notes, and other Downloads"
+      },
+      {
+        "initialValue": true,
+        "description": "Would you like to password protect these files?",
+        "name": "isPasswordProtected",
+        "type": "boolean",
+        "title": "Password Protect?"
+      },
+      {
+        "description": "Leave this blank unless you wish to override the default asset password, which is accessible through the Globals menu.",
+        "hidden": "conditional",
+        "name": "passwordOverride",
+        "type": "string"
+      },
+      {
+        "description": "Add any downloads here that you want to be publicly accessible, regardless of the status of the other downloads.",
+        "of": [
+          {
+            "type": "file"
+          }
+        ],
+        "name": "publicDownloads",
+        "type": "array"
+      }
+    ],
+    "name": "work",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "name": "recordLabel",
+        "type": "string"
+      },
+      {
+        "description": "Ex. TROY1418",
+        "name": "catalogNumber",
+        "type": "string"
+      },
+      {
+        "name": "releaseDate",
+        "type": "date"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Permalink to the album on the record label website.",
+        "name": "albumLink",
+        "type": "url"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Link to where you can purchase the CD",
+        "name": "purchaseLink",
+        "type": "url"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "albumArt",
+        "type": "image"
+      },
+      {
+        "description": "The pieces featured on the CD",
+        "of": [
+          {
+            "fields": [
+              {
+                "to": [
+                  {
+                    "type": "work"
+                  }
+                ],
+                "name": "piece",
+                "type": "reference"
+              },
+              {
+                "name": "performers",
+                "type": "string",
+                "title": "Performer(s)"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "pieces",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "description": "Featured recordings will be listed before the others.",
+        "name": "isFeatured",
+        "type": "boolean",
+        "title": "Featured?"
+      }
+    ],
+    "name": "recording",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "CD Review",
+              "value": "cd"
+            },
+            {
+              "title": "Performance Review",
+              "value": "performance"
+            },
+            {
+              "title": "News",
+              "value": "news"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "performance",
+        "name": "reviewType",
+        "type": "string"
+      },
+      {
+        "description": "Select any pieces referenced in the review",
+        "of": [
+          {
+            "to": [
+              {
+                "type": "work"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to work"
+          }
+        ],
+        "name": "relatedWorks",
+        "type": "array",
+        "title": "Related Piece(s)"
+      },
+      {
+        "of": [
+          {
+            "to": [
+              {
+                "type": "recording"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to recording"
+          }
+        ],
+        "name": "relatedRecordings",
+        "type": "array",
+        "title": "Related CD(s)"
+      },
+      {
+        "name": "body",
+        "type": "blockContent"
+      },
+      {
+        "name": "excerpt",
+        "type": "blockContent"
+      },
+      {
+        "name": "reviewDate",
+        "type": "date"
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "title": "Review Source"
+      },
+      {
+        "name": "author",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "reviewLink",
+        "type": "url"
+      }
+    ],
+    "name": "review",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "programTitle",
+        "type": "string"
+      },
+      {
+        "initialValue": "David Felder",
+        "name": "composer",
+        "type": "string",
+        "title": "Program Composer"
+      },
+      {
+        "name": "context",
+        "type": "string",
+        "title": "Program Context"
+      },
+      {
+        "name": "ensemble",
+        "type": "string",
+        "title": "Program Ensemble / Performer"
+      },
+      {
+        "name": "instrumentation",
+        "type": "string",
+        "title": "Program Instrumentation"
+      },
+      {
+        "rows": 4,
+        "name": "personnel",
+        "type": "text",
+        "title": "Program Personnel"
+      },
+      {
+        "name": "programWork",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "programDate",
+        "type": "date"
+      }
+    ],
+    "name": "performance",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "About",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "body",
+        "type": "blockContent",
+        "title": "Biography"
+      },
+      {
+        "description": "Short biographical summary, awards, positions, etc.",
+        "name": "vitalInfo",
+        "type": "blockContent"
+      },
+      {
+        "description": "Links to external profiles, institutions, etc.",
+        "name": "otherLinks",
+        "type": "blockContent"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "caption",
+                "type": "string"
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alt Text"
+              },
+              {
+                "name": "credits",
+                "type": "string",
+                "title": "Photo Credit"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "URL for embedded stream (YouTube, Vimeo, etc.)",
+        "name": "streamEmbed",
+        "type": "url",
+        "title": "Stream Embed URL"
+      }
+    ],
+    "name": "aboutPage",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "Site Settings",
+        "readOnly": true,
+        "hidden": true,
+        "name": "title",
+        "type": "string",
+        "title": "Site Title"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 4
+              }
+            ],
+            "level": "error",
+            "message": "Password must be at least 4 characters"
+          }
+        ],
+        "description": "The default password for password-protected downloads. Individual works can override this with their own password.",
+        "name": "defaultAssetPassword",
+        "type": "string"
+      }
+    ],
+    "name": "siteSettings",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "description": "Short form (e.g., \"fl\" for flute, \"vn\" for violin)",
+        "name": "abbreviation",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Woodwinds",
+              "value": "woodwinds"
+            },
+            {
+              "title": "Brass",
+              "value": "brass"
+            },
+            {
+              "title": "Strings",
+              "value": "strings"
+            },
+            {
+              "title": "Percussion",
+              "value": "percussion"
+            },
+            {
+              "title": "Keyboard",
+              "value": "keyboard"
+            },
+            {
+              "title": "Voice",
+              "value": "voice"
+            },
+            {
+              "title": "Electronics",
+              "value": "electronics"
+            },
+            {
+              "title": "Other",
+              "value": "other"
+            }
+          ]
+        },
+        "name": "category",
+        "type": "string"
+      }
+    ],
+    "name": "instrument",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "website",
+        "type": "url"
+      },
+      {
+        "name": "logo",
+        "type": "image"
+      }
+    ],
+    "name": "publisher",
+    "type": "document"
+  },
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/",
+                                "/^mailto$/",
+                                "/^tel$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                },
+                {
+                  "initialValue": true,
+                  "name": "blank",
+                  "type": "boolean",
+                  "title": "Open in new tab"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "URL"
+            },
+            {
+              "fields": [
+                {
+                  "to": [
+                    {
+                      "type": "work"
+                    },
+                    {
+                      "type": "recording"
+                    },
+                    {
+                      "type": "review"
+                    }
+                  ],
+                  "name": "reference",
+                  "type": "reference"
+                }
+              ],
+              "name": "internalLink",
+              "type": "object"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Strong"
+            },
+            {
+              "value": "em",
+              "title": "Emphasis"
+            },
+            {
+              "value": "underline",
+              "title": "Underline"
+            },
+            {
+              "value": "strike-through",
+              "title": "Strikethrough"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bullet"
+          },
+          {
+            "value": "number",
+            "title": "Numbered"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normal"
+          },
+          {
+            "value": "h2",
+            "title": "H2"
+          },
+          {
+            "value": "h3",
+            "title": "H3"
+          },
+          {
+            "value": "h4",
+            "title": "H4"
+          },
+          {
+            "value": "blockquote",
+            "title": "Quote"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "caption",
+            "type": "string"
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alt Text"
+          }
+        ],
+        "type": "image"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array",
+    "title": "Rich Text"
+  }
+]

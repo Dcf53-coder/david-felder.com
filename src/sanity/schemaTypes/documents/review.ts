@@ -22,22 +22,8 @@ export const review = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'reviewType',
-      title: 'Review Type',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'CD Review', value: 'cd' },
-          { title: 'Performance Review', value: 'performance' },
-          { title: 'News', value: 'news' },
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'performance',
-    }),
-    defineField({
       name: 'relatedWorks',
-      title: 'Related Piece(s)',
+      title: 'Related Pieces',
       type: 'array',
       description: 'Select any pieces referenced in the review',
       of: [
@@ -49,7 +35,7 @@ export const review = defineType({
     }),
     defineField({
       name: 'relatedRecordings',
-      title: 'Related CD(s)',
+      title: 'Related Recording(s)',
       type: 'array',
       of: [
         {

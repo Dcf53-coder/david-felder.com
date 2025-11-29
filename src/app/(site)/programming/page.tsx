@@ -1,3 +1,29 @@
-export default async function ProgrammingListingPage() {
-  return <div>Program Listing Page</div>
+import { ProgrammingTable } from "@/components/ProgrammingTable";
+import { sanityFetch } from "@/sanity/lib/live";
+import { defineQuery } from "next-sanity";
+import { notFound } from "next/navigation";
+
+// GROQ Query for programming data
+const PROGRAMMING_QUERY = defineQuery(`*[_type == "performance"] | order(programDate desc) {
+  _id,
+  programTitle,
+  composer,
+  context,
+  ensemble,
+  instrumentation,
+  personnel,
+  programWork,
+  programDate
+}`);
+
+export default async function ProgrammingPage() {
+  const { data: programs } = await sanityFetch({
+    query: PROGRAMMING_QUERY,
+  });
+
+  if (!programs) {
+    return notFound();
+  }
+
+  return <ProgrammingTable programs={programs} />;
 }

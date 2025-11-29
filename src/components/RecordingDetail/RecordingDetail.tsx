@@ -16,6 +16,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
 
   const hasPieces = recording.pieces && recording.pieces.length > 0;
   const hasLinks = recording.albumLink || recording.purchaseLink;
+  const hasRelatedReviews = recording.relatedReviews && recording.relatedReviews.length > 0;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -168,6 +169,53 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                   <PieceItem key={piece._key || index} piece={piece} />
                 ))}
               </div>
+            </Section>
+          )}
+
+          {/* Related Reviews */}
+          {hasRelatedReviews && (
+            <Section title="Related Reviews">
+              <ul className="space-y-6">
+                {recording.relatedReviews!.map((review) => {
+                  const reviewYear = review.reviewDate
+                    ? new Date(review.reviewDate).getFullYear()
+                    : null;
+                  const attribution = [review.source, review.author, reviewYear]
+                    .filter(Boolean)
+                    .join(" | ");
+
+                  return (
+                    <li key={review._id}>
+                      {review.slug?.current ? (
+                        <Link
+                          href={`/reviews/${review.slug.current}`}
+                          className="block group"
+                        >
+                          <span className="text-lg font-semibold group-hover:text-accent transition-colors">
+                            {review.title}
+                          </span>
+                          {attribution && (
+                            <span className="block text-sm text-gray-500 mt-1">
+                              {attribution}
+                            </span>
+                          )}
+                        </Link>
+                      ) : (
+                        <div>
+                          <span className="block text-lg font-semibold text-gray-400">
+                            {review.title}
+                          </span>
+                          {attribution && (
+                            <span className="block text-sm text-gray-400 mt-1">
+                              {attribution}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
             </Section>
           )}
         </div>

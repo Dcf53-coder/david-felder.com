@@ -39,6 +39,7 @@ export const blockContent = defineType({
                 validation: (Rule) =>
                   Rule.uri({
                     scheme: ['http', 'https', 'mailto', 'tel'],
+                    allowRelative: true,
                   }),
               },
               {

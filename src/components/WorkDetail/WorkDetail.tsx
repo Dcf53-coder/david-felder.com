@@ -28,6 +28,7 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
     work.score?.url ||
     (work.publicDownloads && work.publicDownloads.length > 0) ||
     (work.downloads && work.downloads.length > 0);
+  const hasRelatedReviews = work.relatedReviews && work.relatedReviews.length > 0;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -151,6 +152,53 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
               downloads={work.downloads}
               isPasswordProtected={work.isPasswordProtected}
             />
+          )}
+
+          {/* Related Reviews */}
+          {hasRelatedReviews && (
+            <Section title="Reviews">
+              <ul className="space-y-6">
+                {work.relatedReviews!.map((review) => {
+                  const reviewYear = review.reviewDate
+                    ? new Date(review.reviewDate).getFullYear()
+                    : null;
+                  const attribution = [review.source, review.author, reviewYear]
+                    .filter(Boolean)
+                    .join(" | ");
+
+                  return (
+                    <li key={review._id}>
+                      {review.slug?.current ? (
+                        <Link
+                          href={`/reviews/${review.slug.current}`}
+                          className="block group"
+                        >
+                          <span className="text-lg font-semibold group-hover:text-accent transition-colors">
+                            {review.title}
+                          </span>
+                          {attribution && (
+                            <span className="block text-sm text-gray-500 mt-1">
+                              {attribution}
+                            </span>
+                          )}
+                        </Link>
+                      ) : (
+                        <div>
+                          <span className="block text-lg font-semibold text-gray-400">
+                            {review.title}
+                          </span>
+                          {attribution && (
+                            <span className="block text-sm text-gray-400 mt-1">
+                              {attribution}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Section>
           )}
 
           {/* Image Gallery at the bottom */}

@@ -1774,27 +1774,6 @@
         },
         "optional": true
       },
-      "reviewType": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "cd"
-            },
-            {
-              "type": "string",
-              "value": "performance"
-            },
-            {
-              "type": "string",
-              "value": "news"
-            }
-          ]
-        },
-        "optional": true
-      },
       "relatedWorks": {
         "type": "objectAttribute",
         "value": {

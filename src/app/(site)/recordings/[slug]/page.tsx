@@ -42,6 +42,14 @@ const RECORDING_DETAIL_QUERY = defineQuery(`*[_type == "recording" && slug.curre
       title,
       slug
     }
+  },
+  "relatedReviews": *[_type == "review" && references(^._id)]{
+    _id,
+    title,
+    slug,
+    source,
+    author,
+    reviewDate
   }
 }`);
 

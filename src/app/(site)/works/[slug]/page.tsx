@@ -152,6 +152,16 @@ const WORK_DETAIL_QUERY = defineQuery(`*[_type == "work" && slug.current == $slu
     },
     useAbbreviatedInstrumentation,
     abbreviatedInstrumentation
+  },
+
+  // Related reviews
+  "relatedReviews": *[_type == "review" && references(^._id)]{
+    _id,
+    title,
+    slug,
+    source,
+    author,
+    reviewDate
   }
 }`);
 
