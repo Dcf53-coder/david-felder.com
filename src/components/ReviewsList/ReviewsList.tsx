@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { ReviewCard } from "./components/ReviewCard";
 import { sortReviews } from "./sort-reviews";
-import { ReviewsListing } from "./types";
+import type { ReviewsListing } from "./types";
 
 interface ReviewsListProps {
   reviews: ReviewsListing;

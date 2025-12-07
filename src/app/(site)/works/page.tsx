@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { WorksList } from "@/components/WorksList";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 // GROQ Query
 // Note: Only supports a single level of nesting (parent -> children)

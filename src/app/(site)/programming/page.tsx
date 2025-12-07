@@ -1,10 +1,11 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { ProgrammingTable } from "@/components/ProgrammingTable";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 // GROQ Query for programming data
-const PROGRAMMING_QUERY = defineQuery(`*[_type == "performance"] | order(programDate desc) {
+const PROGRAMMING_QUERY =
+  defineQuery(`*[_type == "performance"] | order(programDate desc) {
   _id,
   programTitle,
   composer,

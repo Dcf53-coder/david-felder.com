@@ -1,5 +1,5 @@
-import { Table } from "@tanstack/react-table";
-import { ProgramData } from "./types";
+import type { Table } from "@tanstack/react-table";
+import type { ProgramData } from "./types";
 
 interface PaginationControlsProps {
   table: Table<ProgramData>;
@@ -14,6 +14,7 @@ export function PaginationControls({ table }: PaginationControlsProps) {
     <div className="mt-12 flex flex-col sm:flex-row gap-6 sm:items-center sm:justify-between">
       <div className="flex items-center justify-center sm:justify-start gap-2">
         <button
+          type="button"
           className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg bg-white hover:bg-accent/5 hover:border-accent/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-normal"
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
@@ -22,6 +23,7 @@ export function PaginationControls({ table }: PaginationControlsProps) {
           {"<<"}
         </button>
         <button
+          type="button"
           className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg bg-white hover:bg-accent/5 hover:border-accent/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-normal"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -30,6 +32,7 @@ export function PaginationControls({ table }: PaginationControlsProps) {
           {"<"}
         </button>
         <button
+          type="button"
           className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg bg-white hover:bg-accent/5 hover:border-accent/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-normal"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -38,6 +41,7 @@ export function PaginationControls({ table }: PaginationControlsProps) {
           {">"}
         </button>
         <button
+          type="button"
           className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg bg-white hover:bg-accent/5 hover:border-accent/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-normal"
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}

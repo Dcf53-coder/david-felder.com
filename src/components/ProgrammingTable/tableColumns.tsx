@@ -1,15 +1,15 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { ProgramData } from "./types";
-import { dateSortingFn } from "./utils";
+import type { ColumnDef } from "@tanstack/react-table";
 import {
+  ComposerCell,
+  ContextCell,
   DateCell,
+  EnsembleCell,
+  InstrumentationCell,
   ProgramTitleCell,
   WorkCell,
-  ComposerCell,
-  EnsembleCell,
-  ContextCell,
-  InstrumentationCell,
 } from "./TableCells";
+import type { ProgramData } from "./types";
+import { dateSortingFn } from "./utils";
 
 export const createTableColumns = (): ColumnDef<ProgramData>[] => [
   {

@@ -1,4 +1,4 @@
-import { REVIEWS_LISTING_QUERYResult } from "@/sanity/sanity-types";
+import type { REVIEWS_LISTING_QUERYResult } from "@/sanity/sanity-types";
 
 /** The full reviews listing array */
 export type ReviewsListing = NonNullable<REVIEWS_LISTING_QUERYResult>;

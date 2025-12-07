@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { RichText } from "@/components/RichText";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
-import { RichText } from "@/components/RichText";
-import { AboutPage } from "@/sanity/sanity-types";
+import type { AboutPage } from "@/sanity/sanity-types";
 
 async function getAboutPage(): Promise<AboutPage | null> {
   const query = `*[_type == "aboutPage"][0]{
@@ -54,7 +54,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
           {/* Sidebar */}
           <div className="lg:col-span-2 space-y-8">
-            {portraitImage && portraitImage.asset && (
+            {portraitImage?.asset && (
               <div className="w-full max-w-sm mx-auto lg:mx-0">
                 <Image
                   src={urlFor(portraitImage.asset).width(400).height(400).url()}

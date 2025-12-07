@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { RichText } from "@/components/RichText";
-import { WorkDetailData } from "./types";
+import type { WorkDetailData } from "./types";
 
 interface CollapsibleProgramNoteProps {
   programNote: WorkDetailData["programNote"];

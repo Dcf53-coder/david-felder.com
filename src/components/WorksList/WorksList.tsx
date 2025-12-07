@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { WorkCard } from "./components/WorkCard";
 import { sortWorks } from "./sort-works";
-import { WorksListing } from "./types";
+import type { WorksListing } from "./types";
 
 interface WorksListProps {
   works: WorksListing;

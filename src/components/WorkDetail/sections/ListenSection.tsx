@@ -1,7 +1,8 @@
 "use client";
 
-import { FC, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { type FC, useMemo } from "react";
 import { getEmbedInfo } from "@/utils/embed-providers";
 
 interface CdData {
@@ -61,11 +62,10 @@ const SoundCloudPlayer: FC<{ url: string }> = ({ url }) => {
     <iframe
       width="100%"
       height="166"
-      scrolling="no"
-      frameBorder="no"
       allow="autoplay"
       src={embedUrl}
       className="rounded"
+      title="SoundCloud Audio Player"
     />
   );
 };
@@ -77,19 +77,18 @@ const RecordingLink: FC<{ cd: CdData }> = ({ cd }) => {
     <Link
       href={href}
       className="flex items-center gap-4 p-4 bg-white rounded-lg hover:bg-gray-100 transition-colors group"
+      aria-hidden="true"
     >
       {cd.albumArt?.asset?.url && (
         <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
-          <img
+          <Image
             src={cd.albumArt.asset.url}
             alt={cd.title || "Album art"}
+            width={64}
+            height={64}
             className="w-full h-full object-cover"
-            style={{
-              backgroundImage: cd.albumArt.asset.metadata?.lqip
-                ? `url(${cd.albumArt.asset.metadata.lqip})`
-                : undefined,
-              backgroundSize: "cover",
-            }}
+            placeholder={cd.albumArt.asset.metadata?.lqip ? "blur" : "empty"}
+            blurDataURL={cd.albumArt.asset.metadata?.lqip || undefined}
           />
         </div>
       )}

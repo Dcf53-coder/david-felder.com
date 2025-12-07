@@ -5,7 +5,7 @@ interface TableHeaderProps {
 
 export function TableHeader({
   title = "Programming",
-  description = "David Felder's programming and performance history, featuring works by various composers and ensembles."
+  description = "David Felder's programming and performance history, featuring works by various composers and ensembles.",
 }: TableHeaderProps) {
   return (
     <header className="mb-20 flex flex-col items-center md:items-start">

@@ -1,8 +1,8 @@
-import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
-import { Recording } from "../types";
+import type { FC } from "react";
+import { urlFor } from "@/sanity/lib/image";
+import type { Recording } from "../types";
 
 interface RecordingCardProps {
   recording: Recording;
@@ -36,6 +36,7 @@ export const RecordingCard: FC<RecordingCardProps> = ({ recording }) => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"

@@ -13,58 +13,67 @@
  */
 
 // Source: schema.json
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-  listItem?: "bullet" | "number";
-  markDefs?: Array<{
-    href?: string;
-    blank?: boolean;
-    _type: "link";
-    _key: string;
-  } | {
-    reference?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "work";
-    } | {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "recording";
-    } | {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "review";
-    };
-    _type: "internalLink";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  caption?: string;
-  alt?: string;
-  _type: "image";
-  _key: string;
-}>;
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<
+        | {
+            href?: string;
+            blank?: boolean;
+            _type: "link";
+            _key: string;
+          }
+        | {
+            reference?:
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "work";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "recording";
+                }
+              | {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "review";
+                };
+            _type: "internalLink";
+            _key: string;
+          }
+      >;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      caption?: string;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }
+>;
 
 export type SiteSettings = {
   _id: string;
@@ -371,7 +380,15 @@ export type Instrument = {
   _rev: string;
   name?: string;
   abbreviation?: string;
-  category?: "woodwinds" | "brass" | "strings" | "percussion" | "keyboard" | "voice" | "electronics" | "other";
+  category?:
+    | "woodwinds"
+    | "brass"
+    | "strings"
+    | "percussion"
+    | "keyboard"
+    | "voice"
+    | "electronics"
+    | "other";
 };
 
 export type SanityImagePaletteSwatch = {
@@ -470,7 +487,27 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = BlockContent | SiteSettings | AboutPage | SanityImageCrop | SanityImageHotspot | Performance | Work | Publisher | Review | Slug | Recording | Instrument | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes =
+  | BlockContent
+  | SiteSettings
+  | AboutPage
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Performance
+  | Work
+  | Publisher
+  | Review
+  | Slug
+  | Recording
+  | Instrument
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/app/(site)/programming/page.tsx
 // Variable: PROGRAMMING_QUERY
@@ -797,15 +834,15 @@ export type WORKS_LISTING_QUERYResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"performance\"] | order(programDate desc) {\n  _id,\n  programTitle,\n  composer,\n  context,\n  ensemble,\n  instrumentation,\n  personnel,\n  programWork,\n  programDate\n}": PROGRAMMING_QUERYResult;
-    "*[_type == \"recording\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_RECORDING_SLUGS_QUERYResult;
-    "*[_type == \"recording\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  catalogNumber,\n  releaseDate,\n  albumLink,\n  purchaseLink,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  pieces[] {\n    _key,\n    performers,\n    piece -> {\n      _id,\n      title,\n      slug\n    }\n  },\n  \"relatedReviews\": *[_type == \"review\" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate\n  }\n}": RECORDING_DETAIL_QUERYResult;
-    "*[_type == \"recording\"]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  releaseDate,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        lqip\n      }\n    }\n  }\n}": RECORDINGS_LISTING_QUERYResult;
-    "*[_type == \"review\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_REVIEW_SLUGS_QUERYResult;
-    "*[_type == \"review\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  body,\n  excerpt,\n  reviewDate,\n  source,\n  author,\n  reviewLink,\n  relatedWorks[] -> {\n    _id,\n    title,\n    slug\n  },\n  relatedRecordings[] -> {\n    _id,\n    title,\n    slug,\n    recordLabel\n  }\n}": REVIEW_DETAIL_QUERYResult;
-    "*[_type == \"review\"]{\n  _id,\n  title,\n  slug,\n  reviewType,\n  excerpt,\n  reviewDate,\n  source,\n  author\n}": REVIEWS_LISTING_QUERYResult;
-    "*[_type == \"work\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_WORK_SLUGS_QUERYResult;
-    "*[_type == \"work\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n\n  // Instrumentation\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  hasAlternativeInstrumentation,\n  alternativeInstrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n\n  // Notes and descriptions\n  inlineNotes,\n  programNote,\n  miscellaneousNotes,\n\n  // Commission info\n  commissionInfo,\n  dedication,\n\n  // Electronics\n  hasElectronics,\n  electronicsDescription,\n\n  // Media\n  soundCloudEmbedUrl,\n  audio[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  videos[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  images[] {\n    _key,\n    date,\n    performers,\n    location,\n    credits,\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  // Recordings that feature this work (reverse lookup)\n  // Includes: direct references, references to children (for series), or references to parent\n  \"recordings\": *[_type == \"recording\" && (\n    references(^._id) ||\n    count((pieces[].piece._ref)[@ in *[_type == \"work\" && parent._ref == ^.^._id]._id]) > 0 ||\n    references(^.parent._ref)\n  )] | order(releaseDate desc) {\n    _id,\n    title,\n    slug,\n    recordLabel,\n    releaseDate,\n    albumArt {\n      asset -> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    }\n  },\n\n  // Publication info\n  isPublished,\n  publisher -> {\n    name,\n    website\n  },\n  publisherLink,\n  scoreSampleLink,\n\n  // Downloads\n  score {\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  downloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n  isPasswordProtected,\n  publicDownloads[] {\n    _key,\n    \"url\": asset->url,\n    \"filename\": asset->originalFilename\n  },\n\n  // Parent/children relationships\n  parent -> {\n    _id,\n    title,\n    slug\n  },\n  \"children\": *[_type == \"work\" && parent._ref == ^._id] | order(title asc) {\n    _id,\n    title,\n    slug,\n    duration,\n    instrumentation[] {\n      _key,\n      quantity,\n      instrument -> { name }\n    },\n    useAbbreviatedInstrumentation,\n    abbreviatedInstrumentation\n  },\n\n  // Related reviews\n  \"relatedReviews\": *[_type == \"review\" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate\n  }\n}": WORK_DETAIL_QUERYResult;
-    "*[_type == \"work\" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n,\n  \"children\": *[_type == \"work\" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n\n  }\n}": WORKS_LISTING_QUERYResult;
+    '*[_type == "performance"] | order(programDate desc) {\n  _id,\n  programTitle,\n  composer,\n  context,\n  ensemble,\n  instrumentation,\n  personnel,\n  programWork,\n  programDate\n}': PROGRAMMING_QUERYResult;
+    '*[_type == "recording" && defined(slug.current)]{\n  "slug": slug.current\n}': ALL_RECORDING_SLUGS_QUERYResult;
+    '*[_type == "recording" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  catalogNumber,\n  releaseDate,\n  albumLink,\n  purchaseLink,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  pieces[] {\n    _key,\n    performers,\n    piece -> {\n      _id,\n      title,\n      slug\n    }\n  },\n  "relatedReviews": *[_type == "review" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate\n  }\n}': RECORDING_DETAIL_QUERYResult;
+    '*[_type == "recording"]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  releaseDate,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        lqip\n      }\n    }\n  }\n}': RECORDINGS_LISTING_QUERYResult;
+    '*[_type == "review" && defined(slug.current)]{\n  "slug": slug.current\n}': ALL_REVIEW_SLUGS_QUERYResult;
+    '*[_type == "review" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  body,\n  excerpt,\n  reviewDate,\n  source,\n  author,\n  reviewLink,\n  relatedWorks[] -> {\n    _id,\n    title,\n    slug\n  },\n  relatedRecordings[] -> {\n    _id,\n    title,\n    slug,\n    recordLabel\n  }\n}': REVIEW_DETAIL_QUERYResult;
+    '*[_type == "review"]{\n  _id,\n  title,\n  slug,\n  reviewType,\n  excerpt,\n  reviewDate,\n  source,\n  author\n}': REVIEWS_LISTING_QUERYResult;
+    '*[_type == "work" && defined(slug.current)]{\n  "slug": slug.current\n}': ALL_WORK_SLUGS_QUERYResult;
+    '*[_type == "work" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n\n  // Instrumentation\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  hasAlternativeInstrumentation,\n  alternativeInstrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name, abbreviation }\n  },\n\n  // Notes and descriptions\n  inlineNotes,\n  programNote,\n  miscellaneousNotes,\n\n  // Commission info\n  commissionInfo,\n  dedication,\n\n  // Electronics\n  hasElectronics,\n  electronicsDescription,\n\n  // Media\n  soundCloudEmbedUrl,\n  audio[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  videos[] {\n    _key,\n    url,\n    title,\n    date,\n    performers,\n    location,\n    credits\n  },\n  images[] {\n    _key,\n    date,\n    performers,\n    location,\n    credits,\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  // Recordings that feature this work (reverse lookup)\n  // Includes: direct references, references to children (for series), or references to parent\n  "recordings": *[_type == "recording" && (\n    references(^._id) ||\n    count((pieces[].piece._ref)[@ in *[_type == "work" && parent._ref == ^.^._id]._id]) > 0 ||\n    references(^.parent._ref)\n  )] | order(releaseDate desc) {\n    _id,\n    title,\n    slug,\n    recordLabel,\n    releaseDate,\n    albumArt {\n      asset -> {\n        _id,\n        url,\n        metadata {\n          lqip\n        }\n      }\n    }\n  },\n\n  // Publication info\n  isPublished,\n  publisher -> {\n    name,\n    website\n  },\n  publisherLink,\n  scoreSampleLink,\n\n  // Downloads\n  score {\n    "url": asset->url,\n    "filename": asset->originalFilename\n  },\n  downloads[] {\n    _key,\n    "url": asset->url,\n    "filename": asset->originalFilename\n  },\n  isPasswordProtected,\n  publicDownloads[] {\n    _key,\n    "url": asset->url,\n    "filename": asset->originalFilename\n  },\n\n  // Parent/children relationships\n  parent -> {\n    _id,\n    title,\n    slug\n  },\n  "children": *[_type == "work" && parent._ref == ^._id] | order(title asc) {\n    _id,\n    title,\n    slug,\n    duration,\n    instrumentation[] {\n      _key,\n      quantity,\n      instrument -> { name }\n    },\n    useAbbreviatedInstrumentation,\n    abbreviatedInstrumentation\n  },\n\n  // Related reviews\n  "relatedReviews": *[_type == "review" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate\n  }\n}': WORK_DETAIL_QUERYResult;
+    '*[_type == "work" && !defined(parent)]{\n  \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n,\n  "children": *[_type == "work" && parent._ref == ^._id]{\n    \n  _id,\n  title,\n  slug,\n  completionDate,\n  isCompleted,\n  duration,\n  instrumentation[] {\n    _key,\n    quantity,\n    instrument -> { name }\n  },\n  useAbbreviatedInstrumentation,\n  abbreviatedInstrumentation,\n  inlineNotes,\n  commissionInfo\n\n  }\n}': WORKS_LISTING_QUERYResult;
   }
 }

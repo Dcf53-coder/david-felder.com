@@ -1,7 +1,7 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
-import { DownloadItem } from "../types";
+import { type FC, useEffect, useState } from "react";
+import type { DownloadItem } from "../types";
 
 interface DownloadsSectionProps {
   workId: string;
@@ -96,17 +96,16 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
         <h2 className="text-3xl font-black tracking-tight mb-6">Downloads</h2>
         <div className="space-y-4">
           {/* Public downloads are always shown */}
-          {publicDownloads &&
-            publicDownloads.map((download) =>
-              download.url ? (
-                <DownloadCard
-                  key={download._key}
-                  url={download.url}
-                  filename={download.filename || "Download"}
-                  icon={<FileIcon />}
-                />
-              ) : null
-            )}
+          {publicDownloads?.map((download) =>
+            download.url ? (
+              <DownloadCard
+                key={download._key}
+                url={download.url}
+                filename={download.filename || "Download"}
+                icon={<FileIcon />}
+              />
+            ) : null,
+          )}
           {/* Loading placeholder for protected content */}
           <div className="bg-gray-100 rounded-xl p-6 animate-pulse">
             <div className="flex items-center gap-3">
@@ -127,17 +126,16 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
       <h2 className="text-3xl font-black tracking-tight mb-6">Downloads</h2>
       <div className="space-y-4">
         {/* Public downloads - always visible */}
-        {publicDownloads &&
-          publicDownloads.map((download) =>
-            download.url ? (
-              <DownloadCard
-                key={download._key}
-                url={download.url}
-                filename={download.filename || "Download"}
-                icon={<FileIcon />}
-              />
-            ) : null
-          )}
+        {publicDownloads?.map((download) =>
+          download.url ? (
+            <DownloadCard
+              key={download._key}
+              url={download.url}
+              filename={download.filename || "Download"}
+              icon={<FileIcon />}
+            />
+          ) : null,
+        )}
 
         {/* Score - shown if not password protected OR if unlocked */}
         {score?.url && (!isPasswordProtected || isUnlocked) && (
@@ -159,7 +157,7 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
                 filename={download.filename || "Download"}
                 icon={<FileIcon />}
               />
-            ) : null
+            ) : null,
           )}
 
         {/* Password prompt for protected downloads */}
@@ -175,13 +173,17 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
                 </h3>
                 <p className="text-sm text-gray-600">
                   {(downloads?.length ?? 0) + (score?.url ? 1 : 0)} file
-                  {(downloads?.length ?? 0) + (score?.url ? 1 : 0) !== 1 ? "s" : ""} available
+                  {(downloads?.length ?? 0) + (score?.url ? 1 : 0) !== 1
+                    ? "s"
+                    : ""}{" "}
+                  available
                 </p>
               </div>
             </div>
 
             {!showProtected ? (
               <button
+                type="button"
                 onClick={() => setShowProtected(true)}
                 className="text-sm font-mono uppercase tracking-wider text-accent hover:text-accent/80 transition-colors"
               >
@@ -209,9 +211,7 @@ export const DownloadsSection: FC<DownloadsSectionProps> = ({
                     {isLoading ? "Checking..." : "Unlock"}
                   </button>
                 </div>
-                {error && (
-                  <p className="text-sm text-red-600">{error}</p>
-                )}
+                {error && <p className="text-sm text-red-600">{error}</p>}
                 <p className="text-xs text-gray-500">
                   Please{" "}
                   <a
@@ -238,7 +238,12 @@ interface DownloadCardProps {
   icon: React.ReactNode;
 }
 
-const DownloadCard: FC<DownloadCardProps> = ({ url, filename, label, icon }) => {
+const DownloadCard: FC<DownloadCardProps> = ({
+  url,
+  filename,
+  label,
+  icon,
+}) => {
   const displayName = label || filename;
 
   return (
@@ -267,7 +272,10 @@ const ScoreIcon: FC = () => (
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
+    aria-hidden="false"
+    role="img"
   >
+    <title>Score document</title>
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -283,7 +291,10 @@ const FileIcon: FC = () => (
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
+    aria-hidden="false"
+    role="img"
   >
+    <title>Downloadable file</title>
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -299,7 +310,10 @@ const LockIcon: FC = () => (
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
+    aria-hidden="false"
+    role="img"
   >
+    <title>Password protected</title>
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -315,7 +329,10 @@ const DownloadIcon: FC = () => (
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
+    role="img"
+    aria-hidden="true"
   >
+    <title>Download</title>
     <path
       strokeLinecap="round"
       strokeLinejoin="round"

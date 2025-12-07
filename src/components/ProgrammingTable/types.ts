@@ -13,7 +13,15 @@ export interface ProgramData {
 export type ProgrammingListing = ProgramData[];
 
 // Column identifiers for TanStack Table
-export type ColumnId = 'programTitle' | 'composer' | 'context' | 'ensemble' | 'programWork' | 'programDate' | 'instrumentation' | 'personnel';
+export type ColumnId =
+  | "programTitle"
+  | "composer"
+  | "context"
+  | "ensemble"
+  | "programWork"
+  | "programDate"
+  | "instrumentation"
+  | "personnel";
 
 // Table configuration
 export interface TableConfig {

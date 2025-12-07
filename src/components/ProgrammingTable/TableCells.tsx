@@ -1,4 +1,4 @@
-import { formatDate } from './utils';
+import { formatDate } from "./utils";
 
 interface CellProps {
   value: string | undefined;
@@ -16,9 +16,7 @@ export function DateCell({ value }: CellProps) {
 
 export function ProgramTitleCell({ value }: CellProps) {
   return value ? (
-    <div className="font-bold text-foreground">
-      {value}
-    </div>
+    <div className="font-bold text-foreground">{value}</div>
   ) : (
     <span>—</span>
   );
@@ -26,9 +24,7 @@ export function ProgramTitleCell({ value }: CellProps) {
 
 export function WorkCell({ value }: CellProps) {
   return value ? (
-    <div className="text-foreground font-medium">
-      {value}
-    </div>
+    <div className="text-foreground font-medium">{value}</div>
   ) : (
     <span>—</span>
   );

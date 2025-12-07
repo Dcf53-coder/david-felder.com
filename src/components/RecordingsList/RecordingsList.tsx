@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { RecordingCard } from "./components/RecordingCard";
 import { sortRecordings } from "./sort-recordings";
-import { RecordingsListing } from "./types";
+import type { RecordingsListing } from "./types";
 
 interface RecordingsListProps {
   recordings: RecordingsListing;

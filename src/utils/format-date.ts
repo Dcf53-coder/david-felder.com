@@ -34,7 +34,7 @@ export function getSortYear(dateString: string | null): number {
  */
 export function formatCompletionDate(
   dateString: string | null,
-  fallback: string = "in progress"
+  fallback: string = "in progress",
 ): string {
   if (!dateString) return fallback;
 
@@ -45,7 +45,7 @@ export function formatCompletionDate(
 
   // If it's a full ISO date, extract the year
   const date = new Date(dateString);
-  if (!isNaN(date.getTime())) {
+  if (!Number.isNaN(date.getTime())) {
     return date.getFullYear().toString();
   }
 

@@ -1,6 +1,10 @@
-import { PortableText, PortableTextProps, PortableTextComponents } from "@portabletext/react";
-import { forwardRef } from "react";
+import {
+  PortableText,
+  type PortableTextComponents,
+  type PortableTextProps,
+} from "@portabletext/react";
 import Link from "next/link";
+import { forwardRef } from "react";
 import { join } from "@/utils/join";
 
 interface RichTextProps extends PortableTextProps {
@@ -71,7 +75,7 @@ export const RichText = forwardRef<HTMLDivElement, RichTextProps>(
         <PortableText components={components} {...props} />
       </div>
     );
-  }
+  },
 );
 
 RichText.displayName = "RichText";

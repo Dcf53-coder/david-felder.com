@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { ReviewsList } from "@/components/ReviewsList";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 const REVIEWS_LISTING_QUERY = defineQuery(`*[_type == "review"]{
   _id,

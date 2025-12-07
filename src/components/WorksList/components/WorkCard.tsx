@@ -1,8 +1,8 @@
+import Link from "next/link";
+import type { FC } from "react";
 import { formatCompletionDate } from "@/utils/format-date";
 import { formatInstrumentation } from "@/utils/format-instrumentation";
-import Link from "next/link";
-import { FC } from "react";
-import { ChildWork, Work } from "../types";
+import type { ChildWork, Work } from "../types";
 
 interface WorkCardProps {
   work: Work;
@@ -35,7 +35,9 @@ const SingleWorkCard: FC<WorkCardProps> = ({ work }) => {
       <Link
         href={isInProgress ? "#" : href}
         className={`block py-10 md:py-14 ${
-          isInProgress ? "cursor-default" : "hover:bg-accent/3 transition-all duration-normal ease-default border-y border-transparent hover:border-accent/90"
+          isInProgress
+            ? "cursor-default"
+            : "hover:bg-accent/3 transition-all duration-normal ease-default border-y border-transparent hover:border-accent/90"
         }`}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
@@ -177,8 +179,12 @@ const ChildWorkCard: FC<{ work: ChildWork }> = ({ work }) => {
 
       {(work.duration || instrumentation) && (
         <p className="text-base text-gray-700 mt-2">
-          {work.duration && <span className="font-mono">{work.duration}&apos;</span>}
-          {work.duration && instrumentation && <span className="mx-2 text-gray-300">|</span>}
+          {work.duration && (
+            <span className="font-mono">{work.duration}&apos;</span>
+          )}
+          {work.duration && instrumentation && (
+            <span className="mx-2 text-gray-300">|</span>
+          )}
           {instrumentation}
         </p>
       )}

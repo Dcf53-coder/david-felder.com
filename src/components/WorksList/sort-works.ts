@@ -1,5 +1,5 @@
 import { getSortYear } from "@/utils/format-date";
-import { Work } from "./types";
+import type { Work } from "./types";
 
 /**
  * Sort works for display: in-progress first, then by completion date (most recent first).

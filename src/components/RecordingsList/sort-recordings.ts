@@ -1,4 +1,4 @@
-import { Recording } from "./types";
+import type { Recording } from "./types";
 
 /**
  * Sort recordings by featured status first, then by release date (newest first).

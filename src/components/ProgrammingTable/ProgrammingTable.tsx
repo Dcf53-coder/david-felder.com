@@ -7,12 +7,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { ProgrammingListing } from "./types";
-import { createTableColumns } from "./tableColumns";
 import { DesktopTable } from "./DesktopTable";
 import { MobileCardView } from "./MobileCardView";
 import { PaginationControls } from "./PaginationControls";
 import { TableHeader } from "./TableHeader";
+import { createTableColumns } from "./tableColumns";
+import type { ProgrammingListing } from "./types";
 
 interface ProgrammingTableProps {
   programs: ProgrammingListing;
@@ -40,7 +40,7 @@ export function ProgrammingTable({ programs }: ProgrammingTableProps) {
     },
   });
 
-  const hasRows = table.getRowModel().rows.length > 0;
+  const _hasRows = table.getRowModel().rows.length > 0;
 
   return (
     <div className="min-h-screen bg-background text-foreground">

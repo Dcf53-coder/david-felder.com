@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { sortWorks } from "./sort-works";
-import { Work } from "./types";
+import type { Work } from "./types";
 
 // Factory for creating minimal work objects for testing
 function createWork(overrides: Partial<Work> & { _id: string }): Work {

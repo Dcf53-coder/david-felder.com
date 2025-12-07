@@ -20,7 +20,7 @@ type WorkWithInstrumentation = {
  * @returns Formatted instrumentation string or null if none
  */
 export function formatInstrumentation(
-  work: WorkWithInstrumentation
+  work: WorkWithInstrumentation,
 ): string | null {
   // Prefer abbreviated instrumentation if set
   if (work.useAbbreviatedInstrumentation && work.abbreviatedInstrumentation) {

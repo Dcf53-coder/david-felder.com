@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { type FC, useMemo } from "react";
 import { getEmbedInfo } from "@/utils/embed-providers";
 
 interface SoundCloudEmbedProps {
@@ -20,11 +20,12 @@ export const SoundCloudEmbed: FC<SoundCloudEmbedProps> = ({ url }) => {
       <iframe
         width="100%"
         height="166"
-        scrolling="no"
         frameBorder="no"
         allow="autoplay"
         src={embedUrl}
         className="rounded"
+        style={{ overflow: "hidden" }}
+        title="SoundCloud Audio Player"
       />
     </div>
   );
