@@ -1,24 +1,23 @@
-export { ProgrammingTable } from "./ProgrammingTable";
-
 export { DesktopTable } from "./DesktopTable";
+export { EmptyState } from "./EmptyState";
 export { MobileCardView } from "./MobileCardView";
 export { PaginationControls } from "./PaginationControls";
-export { EmptyState } from "./EmptyState";
-export { TableHeader } from "./TableHeader";
+export { ProgrammingTable } from "./ProgrammingTable";
 export {
+  ComposerCell,
+  ContextCell,
   DateCell,
+  EnsembleCell,
+  InstrumentationCell,
   ProgramTitleCell,
   WorkCell,
-  ComposerCell,
-  EnsembleCell,
-  ContextCell,
-  InstrumentationCell
 } from "./TableCells";
+export { TableHeader } from "./TableHeader";
 export { createTableColumns } from "./tableColumns";
-export { formatDate, dateSortingFn } from "./utils";
 export type {
+  ColumnId,
   ProgramData,
   ProgrammingListing,
-  ColumnId,
-  TableConfig
+  TableConfig,
 } from "./types";
+export { dateSortingFn, formatDate } from "./utils";

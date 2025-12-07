@@ -1,4 +1,4 @@
-import { WORK_DETAIL_QUERYResult } from "@/sanity/sanity-types";
+import type { WORK_DETAIL_QUERYResult } from "@/sanity/sanity-types";
 
 /** The full work detail data */
 export type WorkDetailData = NonNullable<WORK_DETAIL_QUERYResult>;

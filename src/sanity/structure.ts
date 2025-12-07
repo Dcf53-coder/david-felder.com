@@ -1,71 +1,80 @@
-import { CogIcon, CommentIcon, DocumentsIcon, InfoOutlineIcon, LaunchIcon, PlayIcon, TiersIcon, UsersIcon } from '@sanity/icons'
-import type { StructureResolver } from 'sanity/structure'
+import {
+  CogIcon,
+  CommentIcon,
+  DocumentsIcon,
+  InfoOutlineIcon,
+  LaunchIcon,
+  PlayIcon,
+  TiersIcon,
+  UsersIcon,
+} from "@sanity/icons";
+import type { StructureResolver } from "sanity/structure";
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Content')
+    .title("Content")
     .items([
       // Singleton pages
       S.listItem()
-        .title('About Page')
+        .title("About Page")
         .icon(InfoOutlineIcon)
-        .schemaType('aboutPage')
+        .schemaType("aboutPage")
         .child(
           S.editor()
-            .id('aboutPage')
-            .schemaType('aboutPage')
-            .documentId('aboutPage')
+            .id("aboutPage")
+            .schemaType("aboutPage")
+            .documentId("aboutPage"),
         ),
 
       S.listItem()
-        .title('Site Settings')
+        .title("Site Settings")
         .icon(CogIcon)
-        .schemaType('siteSettings')
+        .schemaType("siteSettings")
         .child(
           S.editor()
-            .id('siteSettings')
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
+            .id("siteSettings")
+            .schemaType("siteSettings")
+            .documentId("siteSettings"),
         ),
 
       S.divider(),
 
       S.listItem()
-        .title('Works')
+        .title("Works")
         .icon(DocumentsIcon)
-        .schemaType('work')
-        .child(S.documentTypeList('work').title('Works')),
+        .schemaType("work")
+        .child(S.documentTypeList("work").title("Works")),
 
       S.listItem()
-        .title('Recordings')
+        .title("Recordings")
         .icon(PlayIcon)
-        .schemaType('recording')
-        .child(S.documentTypeList('recording').title('Recordings')),
+        .schemaType("recording")
+        .child(S.documentTypeList("recording").title("Recordings")),
 
       S.listItem()
-        .title('Reviews')
+        .title("Reviews")
         .icon(CommentIcon)
-        .schemaType('review')
-        .child(S.documentTypeList('review').title('Reviews')),
+        .schemaType("review")
+        .child(S.documentTypeList("review").title("Reviews")),
 
       S.listItem()
-        .title('Performances')
+        .title("Performances")
         .icon(UsersIcon)
-        .schemaType('performance')
-        .child(S.documentTypeList('performance').title('Performances')),
+        .schemaType("performance")
+        .child(S.documentTypeList("performance").title("Performances")),
 
       S.divider(),
 
       S.listItem()
-        .title('Instruments')
+        .title("Instruments")
         .icon(TiersIcon)
-        .schemaType('instrument')
-        .child(S.documentTypeList('instrument').title('Instruments')),
+        .schemaType("instrument")
+        .child(S.documentTypeList("instrument").title("Instruments")),
 
       S.listItem()
-        .title('Publishers')
+        .title("Publishers")
         .icon(LaunchIcon)
-        .schemaType('publisher')
-        .child(S.documentTypeList('publisher').title('Publishers')),
-    ])
+        .schemaType("publisher")
+        .child(S.documentTypeList("publisher").title("Publishers")),
+    ]);

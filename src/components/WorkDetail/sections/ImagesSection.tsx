@@ -1,7 +1,8 @@
 "use client";
 
-import { FC, useState } from "react";
-import { ImageItem } from "../types";
+import Image from "next/image";
+import { type FC, useState } from "react";
+import type { ImageItem } from "../types";
 
 interface ImagesSectionProps {
   images: ImageItem[];
@@ -13,9 +14,7 @@ export const ImagesSection: FC<ImagesSectionProps> = ({ images }) => {
   return (
     <>
       <div className="space-y-8">
-        <h2 className="text-3xl font-black tracking-tight">
-          Gallery
-        </h2>
+        <h2 className="text-3xl font-black tracking-tight">Gallery</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {images.map((image) => (
             <ImageThumbnail
@@ -29,7 +28,10 @@ export const ImagesSection: FC<ImagesSectionProps> = ({ images }) => {
 
       {/* Lightbox */}
       {selectedImage && (
-        <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
+        <Lightbox
+          image={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
       )}
     </>
   );
@@ -43,20 +45,18 @@ const ImageThumbnail: FC<{ image: ImageItem; onClick: () => void }> = ({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       className="aspect-square overflow-hidden rounded-lg bg-gray-100 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
     >
-      <img
+      <Image
         src={image.asset.url}
         alt={image.performers || "Performance image"}
-        className="w-full h-full object-cover"
-        loading="lazy"
-        style={{
-          backgroundImage: image.asset.metadata?.lqip
-            ? `url(${image.asset.metadata.lqip})`
-            : undefined,
-          backgroundSize: "cover",
-        }}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        placeholder={image.asset.metadata?.lqip ? "blur" : "empty"}
+        blurDataURL={image.asset.metadata?.lqip ?? undefined}
       />
     </button>
   );
@@ -72,8 +72,17 @@ const Lightbox: FC<{ image: ImageItem; onClose: () => void }> = ({
     <div
       className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
       onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lightbox-image"
     >
       <button
+        type="button"
         onClick={onClose}
         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
         aria-label="Close"
@@ -83,7 +92,10 @@ const Lightbox: FC<{ image: ImageItem; onClose: () => void }> = ({
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          role="img"
+          aria-hidden="true"
         >
+          <title>Close</title>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -96,17 +108,25 @@ const Lightbox: FC<{ image: ImageItem; onClose: () => void }> = ({
       <div
         className="max-w-5xl max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="none"
       >
-        <img
-          src={image.asset.url}
-          alt={image.performers || "Performance image"}
-          className="max-h-[80vh] object-contain rounded-lg"
-        />
-        {(image.performers || image.date || image.location || image.credits) && (
+        <div className="relative w-full h-[80vh]">
+          <Image
+            src={image.asset.url}
+            alt={image.performers || "Performance image"}
+            fill
+            className="object-contain rounded-lg"
+            sizes="90vw"
+            id="lightbox-image"
+          />
+        </div>
+        {(image.performers ||
+          image.date ||
+          image.location ||
+          image.credits) && (
           <div className="mt-4 text-center text-white">
-            {image.performers && (
-              <p className="text-lg">{image.performers}</p>
-            )}
+            {image.performers && <p className="text-lg">{image.performers}</p>}
             <p className="text-sm text-gray-400 mt-1">
               {[image.date, image.location, image.credits]
                 .filter(Boolean)

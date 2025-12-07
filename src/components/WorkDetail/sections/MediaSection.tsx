@@ -1,10 +1,10 @@
 "use client";
 
-import { FC, useMemo } from "react";
-import { AudioItem, VideoItem } from "../types";
+import { type FC, useMemo } from "react";
+import { getEmbedInfo } from "@/utils/embed-providers";
+import type { AudioItem, VideoItem } from "../types";
 import { AudioSection } from "./AudioSection";
 import { VideosSection } from "./VideosSection";
-import { getEmbedInfo } from "@/utils/embed-providers";
 
 interface MediaSectionProps {
   soundCloudEmbedUrl?: string | null;
@@ -31,9 +31,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
 
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-black tracking-tight">
-        Media
-      </h2>
+      <h2 className="text-3xl font-black tracking-tight">Media</h2>
 
       <div className="space-y-6">
         {/* SoundCloud embed */}
@@ -41,11 +39,10 @@ export const MediaSection: FC<MediaSectionProps> = ({
           <iframe
             width="100%"
             height="166"
-            scrolling="no"
-            frameBorder="no"
             allow="autoplay"
             src={embedUrl}
             className="rounded"
+            title="SoundCloud Audio Player"
           />
         )}
 

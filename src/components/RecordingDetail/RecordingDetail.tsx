@@ -1,9 +1,9 @@
-import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { Section } from "@/components/WorkDetail";
-import { RecordingDetailData } from "./types";
+import { urlFor } from "@/sanity/lib/image";
+import type { RecordingDetailData } from "./types";
 
 interface RecordingDetailProps {
   recording: RecordingDetailData;
@@ -14,9 +14,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
     ? new Date(recording.releaseDate).getFullYear()
     : null;
 
-  const hasPieces = recording.pieces && recording.pieces.length > 0;
   const hasLinks = recording.albumLink || recording.purchaseLink;
-  const hasRelatedReviews = recording.relatedReviews && recording.relatedReviews.length > 0;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -52,6 +50,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -120,7 +119,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
+                        aria-hidden="false"
+                        role="img"
                       >
+                        <title>External link to album</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -136,6 +138,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:border-accent hover:text-accent transition-colors"
+                      aria-label="Purchase"
                     >
                       Purchase
                       <svg
@@ -143,7 +146,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
+                        aria-hidden="false"
+                        role="img"
                       >
+                        <title>External link to purchase</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -162,10 +168,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
         {/* Main content */}
         <div className="space-y-16">
           {/* Pieces on this recording */}
-          {hasPieces && (
+          {recording.pieces && recording.pieces.length > 0 && (
             <Section title="Featured Works">
               <div className="space-y-0">
-                {recording.pieces!.map((piece, index) => (
+                {recording.pieces.map((piece, index) => (
                   <PieceItem key={piece._key || index} piece={piece} />
                 ))}
               </div>
@@ -173,10 +179,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
           )}
 
           {/* Related Reviews */}
-          {hasRelatedReviews && (
+          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Related Reviews">
               <ul className="space-y-6">
-                {recording.relatedReviews!.map((review) => {
+                {recording.relatedReviews.map((review) => {
                   const reviewYear = review.reviewDate
                     ? new Date(review.reviewDate).getFullYear()
                     : null;

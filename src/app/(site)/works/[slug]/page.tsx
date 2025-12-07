@@ -1,16 +1,18 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { WorkDetail } from "@/components/WorkDetail";
 import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 // Query for fetching all work slugs for static generation
-const ALL_WORK_SLUGS_QUERY = defineQuery(`*[_type == "work" && defined(slug.current)]{
+const ALL_WORK_SLUGS_QUERY =
+  defineQuery(`*[_type == "work" && defined(slug.current)]{
   "slug": slug.current
 }`);
 
 // GROQ Query for fetching a single work with all details
-const WORK_DETAIL_QUERY = defineQuery(`*[_type == "work" && slug.current == $slug][0]{
+const WORK_DETAIL_QUERY =
+  defineQuery(`*[_type == "work" && slug.current == $slug][0]{
   _id,
   title,
   slug,
@@ -211,7 +213,8 @@ export async function generateMetadata({ params }: WorkDetailPageProps) {
   }
 
   const title = work.title ? `${work.title} | David Felder` : "David Felder";
-  const description = work.commissionInfo || work.inlineNotes || `${work.title} by David Felder`;
+  const description =
+    work.commissionInfo || work.inlineNotes || `${work.title} by David Felder`;
 
   return {
     title,

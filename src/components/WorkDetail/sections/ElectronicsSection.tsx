@@ -1,6 +1,6 @@
-import { BlockContent } from "@/sanity/sanity-types";
 import { PortableText } from "@portabletext/react";
-import { FC } from "react";
+import type { FC } from "react";
+import type { BlockContent } from "@/sanity/sanity-types";
 
 interface ElectronicsSectionProps {
   description: BlockContent | null;
@@ -18,6 +18,7 @@ export const ElectronicsSection: FC<ElectronicsSectionProps> = ({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -37,7 +38,8 @@ export const ElectronicsSection: FC<ElectronicsSectionProps> = ({
         </div>
       ) : (
         <p className="text-gray-400">
-          This work includes electronic components. Contact for more information.
+          This work includes electronic components. Contact for more
+          information.
         </p>
       )}
     </section>

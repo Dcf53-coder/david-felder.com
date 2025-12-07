@@ -1,16 +1,18 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { ReviewDetail } from "@/components/ReviewDetail";
 import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 // Query for fetching all review slugs for static generation
-const ALL_REVIEW_SLUGS_QUERY = defineQuery(`*[_type == "review" && defined(slug.current)]{
+const ALL_REVIEW_SLUGS_QUERY =
+  defineQuery(`*[_type == "review" && defined(slug.current)]{
   "slug": slug.current
 }`);
 
 // GROQ Query for fetching a single review with all details
-const REVIEW_DETAIL_QUERY = defineQuery(`*[_type == "review" && slug.current == $slug][0]{
+const REVIEW_DETAIL_QUERY =
+  defineQuery(`*[_type == "review" && slug.current == $slug][0]{
   _id,
   title,
   slug,
@@ -88,9 +90,10 @@ export async function generateMetadata({ params }: ReviewDetailPageProps) {
   if (review.source) descriptionParts.push(review.source);
   if (review.author) descriptionParts.push(`by ${review.author}`);
 
-  const description = descriptionParts.length > 0
-    ? descriptionParts.join(" ")
-    : `Review: ${review.title}`;
+  const description =
+    descriptionParts.length > 0
+      ? descriptionParts.join(" ")
+      : `Review: ${review.title}`;
 
   return {
     title,

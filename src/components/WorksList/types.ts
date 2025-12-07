@@ -1,4 +1,4 @@
-import { WORKS_LISTING_QUERYResult } from "@/sanity/sanity-types";
+import type { WORKS_LISTING_QUERYResult } from "@/sanity/sanity-types";
 
 /** The full works listing array */
 export type WorksListing = NonNullable<WORKS_LISTING_QUERYResult>;

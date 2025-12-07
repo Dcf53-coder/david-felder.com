@@ -1,16 +1,18 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { RecordingDetail } from "@/components/RecordingDetail";
 import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 // Query for fetching all recording slugs for static generation
-const ALL_RECORDING_SLUGS_QUERY = defineQuery(`*[_type == "recording" && defined(slug.current)]{
+const ALL_RECORDING_SLUGS_QUERY =
+  defineQuery(`*[_type == "recording" && defined(slug.current)]{
   "slug": slug.current
 }`);
 
 // GROQ Query for fetching a single recording with all details
-const RECORDING_DETAIL_QUERY = defineQuery(`*[_type == "recording" && slug.current == $slug][0]{
+const RECORDING_DETAIL_QUERY =
+  defineQuery(`*[_type == "recording" && slug.current == $slug][0]{
   _id,
   title,
   slug,
@@ -62,7 +64,9 @@ export async function generateStaticParams() {
   const recordings = await client.fetch(ALL_RECORDING_SLUGS_QUERY);
 
   return recordings
-    .filter((recording): recording is { slug: string } => recording.slug !== null)
+    .filter(
+      (recording): recording is { slug: string } => recording.slug !== null,
+    )
     .map((recording) => ({
       slug: recording.slug,
     }));

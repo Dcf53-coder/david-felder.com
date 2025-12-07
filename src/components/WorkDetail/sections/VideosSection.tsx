@@ -1,8 +1,8 @@
 "use client";
 
-import { FC } from "react";
-import { VideoItem } from "../types";
+import type { FC } from "react";
 import { getEmbedInfo } from "@/utils/embed-providers";
+import type { VideoItem } from "../types";
 
 interface VideosSectionProps {
   videos: VideoItem[];
@@ -22,7 +22,8 @@ const VideoCard: FC<{ item: VideoItem }> = ({ item }) => {
   if (!item.url) return null;
 
   const embedInfo = getEmbedInfo(item.url);
-  const hasMetadata = item.title || item.performers || item.date || item.location || item.credits;
+  const hasMetadata =
+    item.title || item.performers || item.date || item.location || item.credits;
 
   return (
     <div className="space-y-3">

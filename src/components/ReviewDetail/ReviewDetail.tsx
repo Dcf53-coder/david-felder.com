@@ -1,7 +1,7 @@
-import { RichText } from "@/components/RichText";
 import Link from "next/link";
-import { FC } from "react";
-import { ReviewDetailData } from "./types";
+import type { FC } from "react";
+import { RichText } from "@/components/RichText";
+import type { ReviewDetailData } from "./types";
 
 interface ReviewDetailProps {
   review: ReviewDetailData;
@@ -16,8 +16,7 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({ review }) => {
     .filter(Boolean)
     .join(" | ");
 
-  const hasRelatedWorks =
-    review.relatedWorks && review.relatedWorks.length > 0;
+  const hasRelatedWorks = review.relatedWorks && review.relatedWorks.length > 0;
   const hasRelatedRecordings =
     review.relatedRecordings && review.relatedRecordings.length > 0;
 
@@ -58,7 +57,10 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({ review }) => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="false"
+                role="img"
               >
+                <title>External link to review source</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -87,7 +89,7 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({ review }) => {
                     Related Works
                   </h2>
                   <ul className="space-y-4">
-                    {review.relatedWorks!.map((work) => (
+                    {review.relatedWorks?.map((work) => (
                       <li key={work._id}>
                         {work.slug?.current ? (
                           <Link
@@ -115,7 +117,7 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({ review }) => {
                     Related Recordings
                   </h2>
                   <ul className="space-y-4">
-                    {review.relatedRecordings!.map((recording) => (
+                    {review.relatedRecordings?.map((recording) => (
                       <li key={recording._id}>
                         {recording.slug?.current ? (
                           <Link

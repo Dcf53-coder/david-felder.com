@@ -1,7 +1,7 @@
-import { RichText } from "@/components/RichText";
 import Link from "next/link";
-import { FC } from "react";
-import { Review } from "../types";
+import type { FC } from "react";
+import { RichText } from "@/components/RichText";
+import type { Review } from "../types";
 
 interface ReviewCardProps {
   review: Review;
@@ -36,9 +36,7 @@ export const ReviewCard: FC<ReviewCardProps> = ({ review }) => {
             {review.source && (
               <p className="font-medium text-gray-700">{review.source}</p>
             )}
-            <p>
-              {[review.author, reviewYear].filter(Boolean).join(", ")}
-            </p>
+            <p>{[review.author, reviewYear].filter(Boolean).join(", ")}</p>
           </div>
         </div>
       </Link>

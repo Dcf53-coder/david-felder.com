@@ -1,17 +1,17 @@
+import Link from "next/link";
+import type { FC } from "react";
+import { RichText } from "@/components/RichText";
 import { formatCompletionDate } from "@/utils/format-date";
 import { formatInstrumentation } from "@/utils/format-instrumentation";
-import { RichText } from "@/components/RichText";
-import Link from "next/link";
-import { FC } from "react";
+import { CollapsibleProgramNote } from "./CollapsibleProgramNote";
+import { InfoBlock } from "./InfoBlock";
+import { Section } from "./Section";
 import { ChildWorksSection } from "./sections/ChildWorksSection";
 import { DownloadsSection } from "./sections/DownloadsSection";
 import { ImagesSection } from "./sections/ImagesSection";
 import { MediaSection } from "./sections/MediaSection";
 import { PublicationSection } from "./sections/PublicationSection";
-import { WorkDetailData } from "./types";
-import { InfoBlock } from "./InfoBlock";
-import { CollapsibleProgramNote } from "./CollapsibleProgramNote";
-import { Section } from "./Section";
+import type { WorkDetailData } from "./types";
 
 interface WorkDetailProps {
   work: WorkDetailData;
@@ -28,7 +28,8 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
     work.score?.url ||
     (work.publicDownloads && work.publicDownloads.length > 0) ||
     (work.downloads && work.downloads.length > 0);
-  const hasRelatedReviews = work.relatedReviews && work.relatedReviews.length > 0;
+  const hasRelatedReviews =
+    work.relatedReviews && work.relatedReviews.length > 0;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -66,20 +67,21 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
             )}
 
             <div className="h-2 w-32 bg-gray-900 mt-2" />
-
           </div>
 
           {/* Commission */}
           {work.commissionInfo && (
-            <div className="text-2xl text-balance">
-              {work.commissionInfo}
-            </div>
+            <div className="text-2xl text-balance">{work.commissionInfo}</div>
           )}
 
           {/* Quick facts */}
           <div className="mt-10 flex flex-col md:flex-row gap-6">
             {work.duration && (
-              <InfoBlock label="Duration" value={`${work.duration}'`} className="text-4xl!" />
+              <InfoBlock
+                label="Duration"
+                value={`${work.duration}'`}
+                className="text-4xl!"
+              />
             )}
             {instrumentation && (
               <InfoBlock label="Instrumentation" value={instrumentation} />
@@ -98,8 +100,6 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
 
         {/* Main content grid */}
         <div className="space-y-16">
-
-
           {/* Program Note */}
           {work.programNote && (
             <Section title="Program Note">
@@ -119,14 +119,15 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
           {/* Miscellaneous Notes */}
           {work.miscellaneousNotes && (
             <Section title="Additional Notes">
-              <RichText value={work.miscellaneousNotes} className="prose-lg prose-gray max-w-none" />
+              <RichText
+                value={work.miscellaneousNotes}
+                className="prose-lg prose-gray max-w-none"
+              />
             </Section>
           )}
 
           {/* Child works (if this is a series) */}
-          {hasChildren && (
-            <ChildWorksSection children={work.children} />
-          )}
+          {hasChildren && <ChildWorksSection childWorks={work.children} />}
 
           {/* Media section (streaming: SoundCloud, audio, videos) */}
           <MediaSection
@@ -158,7 +159,7 @@ export const WorkDetail: FC<WorkDetailProps> = ({ work }) => {
           {hasRelatedReviews && (
             <Section title="Reviews">
               <ul className="space-y-6">
-                {work.relatedReviews!.map((review) => {
+                {work.relatedReviews?.map((review) => {
                   const reviewYear = review.reviewDate
                     ? new Date(review.reviewDate).getFullYear()
                     : null;

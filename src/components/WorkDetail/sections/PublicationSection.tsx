@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 
 interface RecordingData {
   _id: string;
@@ -40,9 +41,7 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
 
   return (
     <section>
-      <h2 className="text-3xl font-black tracking-tight mb-8">
-        Publication
-      </h2>
+      <h2 className="text-3xl font-black tracking-tight mb-8">Publication</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Score Publisher Column */}
         {hasPublisher && (
@@ -82,7 +81,10 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="false"
+                    role="img"
                   >
+                    <title>External link to publisher</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -105,7 +107,10 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="false"
+                    role="img"
                   >
+                    <title>View score sample document</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -130,17 +135,22 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
               {recordings.map((recording) => (
                 <Link
                   key={recording._id}
-                  href={recording.slug?.current ? `/recordings/${recording.slug.current}` : "#"}
+                  href={
+                    recording.slug?.current
+                      ? `/recordings/${recording.slug.current}`
+                      : "#"
+                  }
                   className="flex items-center gap-4 group"
                 >
                   {recording.albumArt?.asset?.url && (
                     <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
-                      <img
+                      <Image
                         src={recording.albumArt.asset.url}
                         alt={recording.title || "Album art"}
                         className="w-full h-full object-cover"
                         style={{
-                          backgroundImage: recording.albumArt.asset.metadata?.lqip
+                          backgroundImage: recording.albumArt.asset.metadata
+                            ?.lqip
                             ? `url(${recording.albumArt.asset.metadata.lqip})`
                             : undefined,
                           backgroundSize: "cover",
@@ -153,7 +163,9 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
                       {recording.title}
                     </h4>
                     {recording.recordLabel && (
-                      <p className="text-sm text-gray-600 truncate">{recording.recordLabel}</p>
+                      <p className="text-sm text-gray-600 truncate">
+                        {recording.recordLabel}
+                      </p>
                     )}
                     <span className="inline-block mt-2 text-sm font-mono uppercase tracking-wider text-accent">
                       View Recording &rarr;

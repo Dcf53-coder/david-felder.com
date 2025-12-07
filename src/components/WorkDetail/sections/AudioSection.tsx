@@ -1,8 +1,8 @@
 "use client";
 
-import { FC } from "react";
-import { AudioItem } from "../types";
+import type { FC } from "react";
 import { getEmbedInfo } from "@/utils/embed-providers";
+import type { AudioItem } from "../types";
 
 interface AudioSectionProps {
   audio: AudioItem[];
@@ -53,11 +53,10 @@ const AudioPlayer: FC<{ item: AudioItem }> = ({ item }) => {
         <iframe
           width="100%"
           height="166"
-          scrolling="no"
-          frameBorder="no"
           allow="autoplay"
           src={embedInfo.embedUrl}
           className="rounded"
+          title="SoundCloud Audio Player"
         />
       </div>
     );

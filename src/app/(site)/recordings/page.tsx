@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
+import { defineQuery } from "next-sanity";
 import { RecordingsList } from "@/components/RecordingsList";
 import { sanityFetch } from "@/sanity/lib/live";
-import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
 
 const RECORDINGS_LISTING_QUERY = defineQuery(`*[_type == "recording"]{
   _id,

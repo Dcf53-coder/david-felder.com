@@ -1,20 +1,22 @@
-import { formatInstrumentation } from "@/utils/format-instrumentation";
 import Link from "next/link";
-import { FC } from "react";
-import { ChildWorkItem } from "../types";
+import type { FC } from "react";
+import { formatInstrumentation } from "@/utils/format-instrumentation";
+import type { ChildWorkItem } from "../types";
 
 interface ChildWorksSectionProps {
-  children: ChildWorkItem[];
+  childWorks: ChildWorkItem[];
 }
 
-export const ChildWorksSection: FC<ChildWorksSectionProps> = ({ children }) => {
+export const ChildWorksSection: FC<ChildWorksSectionProps> = ({
+  childWorks,
+}) => {
   return (
     <section>
       <h2 className="text-3xl font-black tracking-tight mb-6">
         Works in this Series
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {children.map((child) => (
+        {childWorks.map((child) => (
           <ChildWorkCard key={child._id} work={child} />
         ))}
       </div>
