@@ -4,49 +4,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository contains a **Next.js + Sanity CMS** website for composer David Felder (david-felder.com), rebuilt from a legacy Craft CMS 3 installation. The site is a portfolio/catalog for a classical music composer, featuring works, recordings, reviews, performances, and programming information.
+This is a **Next.js + Sanity CMS** website for composer David Felder (david-felder.com). The site is a portfolio/catalog for a classical music composer, featuring works, recordings, reviews, performances, and programming information.
 
-The repository has two main parts:
-1. **david-felder.com/** - Active Next.js 16 + Sanity v4 application
-2. **www/public_html/** - Legacy Craft CMS 3 installation (reference only, contains malicious files - DO NOT DEPLOY)
+Built with Next.js 16 and Sanity v4, this application was migrated from a legacy Craft CMS 3 installation.
 
 ## Development Commands
+
+**This project uses pnpm as the package manager.**
 
 ### Core Commands
 ```bash
 # Development server (runs on http://localhost:3000)
-npm run dev
+pnpm dev
 
 # Production build
-npm run build
+pnpm build
 
 # Start production server
-npm start
+pnpm start
 
 # Run tests
-npm test
+pnpm test
 
 # Linting (uses Biome)
-npm run lint
+pnpm lint
 
 # Auto-format code
-npm run format
+pnpm format
 
 # Generate Sanity types
-npm run typegen
+pnpm typegen
 ```
 
 ### Sanity Admin
 - Access Sanity Studio at: http://localhost:3000/admin
 - Configured in `sanity.config.ts` with basePath '/admin'
-
-### Data Migration Scripts
-Located in `scripts/`:
-- `export-to-sanity.mjs` - Migrated data from Craft CMS to Sanity NDJSON format
-- `delete-works-instruments.mjs` - Utility for cleaning up instrument references
-- `update-review-work-references.mjs` - Updates work references in review documents
-
-**Note:** These scripts require `SANITY_TOKEN` environment variable.
 
 ## Architecture
 
@@ -193,7 +185,7 @@ All utilities have corresponding `.test.ts` files using Vitest.
 
 - **Vitest** configured for unit tests
 - Test files co-located with source (e.g., `format-date.test.ts`)
-- Run tests with `npm test`
+- Run tests with `pnpm test`
 
 ### Environment Variables
 
@@ -211,16 +203,6 @@ SANITY_TOKEN=  # For write operations in scripts
 - Configuration in `biome.json`
 - Next.js and React linting domains enabled
 - Git integration enabled for VCS awareness
-
-### Migration Context
-
-This site was migrated from Craft CMS 3. The legacy code exists in `www/public_html/` for reference but should **not be modified or deployed** as it contains security vulnerabilities. The `scripts/export-to-sanity.mjs` script performed the one-time migration of content from MySQL to Sanity's NDJSON format.
-
-Key migration transformations:
-- Craft Matrix fields → Sanity block content
-- Craft Assets → Sanity assets (with CDN hosting)
-- Craft entries → Sanity documents
-- HTML content → Portable Text blocks
 
 ### Password-Protected Downloads
 
