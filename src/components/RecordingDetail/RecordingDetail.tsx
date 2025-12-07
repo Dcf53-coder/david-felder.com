@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import Img from "@/components/ui/Img";
 import { Section } from "@/components/WorkDetail";
-import { urlFor } from "@/sanity/lib/image";
 import type { RecordingDetailData } from "./types";
 
 interface RecordingDetailProps {
@@ -34,9 +33,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             {/* Album Art */}
             <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100">
-              {recording.albumArt?.asset ? (
-                <Image
-                  src={urlFor(recording.albumArt).width(800).height(800).url()}
+              {recording.albumArt ? (
+                <Img
+                  image={recording.albumArt}
+                  imageOptions={{ width: 800, height: 800 }}
                   alt={recording.title || "Album art"}
                   fill
                   className="object-cover"

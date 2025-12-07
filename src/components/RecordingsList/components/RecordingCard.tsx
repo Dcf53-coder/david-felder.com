@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { urlFor } from "@/sanity/lib/image";
+import Img from "@/components/ui/Img";
 import type { Recording } from "../types";
 
 interface RecordingCardProps {
@@ -21,9 +20,10 @@ export const RecordingCard: FC<RecordingCardProps> = ({ recording }) => {
       <Link href={href} className="block">
         {/* Album Art */}
         <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 mb-4">
-          {recording.albumArt?.asset ? (
-            <Image
-              src={urlFor(recording.albumArt).width(600).height(600).url()}
+          {recording.albumArt ? (
+            <Img
+              image={recording.albumArt}
+              imageOptions={{ width: 600, height: 600 }}
               alt={recording.title || "Album art"}
               fill
               className="object-cover"
