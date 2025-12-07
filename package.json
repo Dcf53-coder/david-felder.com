@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "test": "vitest",
+    "test": "vitest run",
     "del": "SANITY_TOKEN=\"sksGM87YaViXHiC597WidKxImu3w8QcxsewBORz4o0e49ay9s8tucbBqHFYXWJeDFVUu6JPi5N0vSnBpDbbssem4bDZU0tbn6EaahLeu6hGOAcYaleeHhO0Ymww6Bb6k83xppHsfAQ5mYQaEx1wwBTf6IivJqSxKfcFTm2qIh3WD9W9QBDQw\" node scripts/delete-works-instruments.mjs",
     "update-reviews": "SANITY_TOKEN=\"sksGM87YaViXHiC597WidKxImu3w8QcxsewBORz4o0e49ay9s8tucbBqHFYXWJeDFVUu6JPi5N0vSnBpDbbssem4bDZU0tbn6EaahLeu6hGOAcYaleeHhO0Ymww6Bb6k83xppHsfAQ5mYQaEx1wwBTf6IivJqSxKfcFTm2qIh3WD9W9QBDQw\" node scripts/update-review-work-references.mjs",
     "typegen": "sanity schema extract --path ./src/sanity/schemas.json && sanity typegen generate --config-path ./sanity-typegen.json"
