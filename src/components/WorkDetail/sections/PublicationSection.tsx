@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import Img from "@/components/ui/Img";
 
 interface RecordingData {
   _id: string;
@@ -13,8 +13,25 @@ interface RecordingData {
       url: string | null;
       metadata: {
         lqip: string | null;
+        dimensions?: {
+          width: number;
+          height: number;
+          aspectRatio: number;
+        };
       } | null;
     } | null;
+    crop?: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    };
+    hotspot?: {
+      x: number;
+      y: number;
+      height: number;
+      width: number;
+    };
   } | null;
 }
 
@@ -142,19 +159,14 @@ export const PublicationSection: FC<PublicationSectionProps> = ({
                   }
                   className="flex items-center gap-4 group"
                 >
-                  {recording.albumArt?.asset?.url && (
-                    <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
-                      <Image
-                        src={recording.albumArt.asset.url}
+                  {recording.albumArt && (
+                    <div className="w-16 h-16 shrink-0 rounded overflow-hidden shadow">
+                      <Img
+                        image={recording.albumArt}
+                        width={64}
+                        height={64}
                         alt={recording.title || "Album art"}
                         className="w-full h-full object-cover"
-                        style={{
-                          backgroundImage: recording.albumArt.asset.metadata
-                            ?.lqip
-                            ? `url(${recording.albumArt.asset.metadata.lqip})`
-                            : undefined,
-                          backgroundSize: "cover",
-                        }}
                       />
                     </div>
                   )}

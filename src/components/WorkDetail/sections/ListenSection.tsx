@@ -1,8 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { type FC, useMemo } from "react";
+import Img from "@/components/ui/Img";
+import type {
+  SanityImageAsset,
+  SanityImageCrop,
+  SanityImageHotspot,
+} from "@/sanity/sanity-types";
 import { getEmbedInfo } from "@/utils/embed-providers";
 
 interface CdData {
@@ -11,13 +16,9 @@ interface CdData {
   slug: { current?: string } | null;
   recordLabel: string | null;
   albumArt: {
-    asset: {
-      _id: string;
-      url: string | null;
-      metadata: {
-        lqip: string | null;
-      } | null;
-    } | null;
+    asset: SanityImageAsset;
+    crop?: SanityImageCrop;
+    hotspot?: SanityImageHotspot;
   } | null;
 }
 
@@ -79,16 +80,14 @@ const RecordingLink: FC<{ cd: CdData }> = ({ cd }) => {
       className="flex items-center gap-4 p-4 bg-white rounded-lg hover:bg-gray-100 transition-colors group"
       aria-hidden="true"
     >
-      {cd.albumArt?.asset?.url && (
+      {cd.albumArt && (
         <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden shadow">
-          <Image
-            src={cd.albumArt.asset.url}
+          <Img
+            image={cd.albumArt}
             alt={cd.title || "Album art"}
             width={64}
             height={64}
             className="w-full h-full object-cover"
-            placeholder={cd.albumArt.asset.metadata?.lqip ? "blur" : "empty"}
-            blurDataURL={cd.albumArt.asset.metadata?.lqip || undefined}
           />
         </div>
       )}

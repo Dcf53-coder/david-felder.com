@@ -1,33 +1,37 @@
-import Image from "next/image";
+import { defineQuery } from "next-sanity";
 import { RichText } from "@/components/RichText";
-import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
-import type { AboutPage } from "@/sanity/sanity-types";
+import Img from "@/components/ui/Img";
+import { sanityFetch } from "@/sanity/lib/live";
 
-async function getAboutPage(): Promise<AboutPage | null> {
-  const query = `*[_type == "aboutPage"][0]{
-    title,
-    body,
-    vitalInfo,
-    otherLinks,
-    images[]{
-      asset->{
-        _id,
-        url,
-        metadata
-      },
-      caption,
-      alt,
-      credits
+const ABOUT_PAGE_QUERY = defineQuery(`*[_type == "aboutPage"][0]{
+  title,
+  body,
+  vitalInfo,
+  otherLinks,
+  images[]{
+    asset -> {
+      _id,
+      url,
+      metadata {
+        dimensions {
+          width,
+          height,
+          aspectRatio
+        },
+        lqip
+      }
     },
-    streamEmbed
-  }`;
-
-  return await client.fetch<AboutPage>(query);
-}
+    caption,
+    alt,
+    credits
+  },
+  streamEmbed
+}`);
 
 export default async function Home() {
-  const aboutPage = await getAboutPage();
+  const { data: aboutPage } = await sanityFetch({
+    query: ABOUT_PAGE_QUERY,
+  });
 
   if (!aboutPage) {
     return (
@@ -56,8 +60,9 @@ export default async function Home() {
           <div className="lg:col-span-2 space-y-8">
             {portraitImage?.asset && (
               <div className="w-full max-w-sm mx-auto lg:mx-0">
-                <Image
-                  src={urlFor(portraitImage.asset).width(400).height(400).url()}
+                <Img
+                  image={portraitImage}
+                  imageOptions={{ width: 400, height: 400 }}
                   alt={portraitImage.alt || "David Felder portrait"}
                   width={400}
                   height={400}

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { type FC, useState } from "react";
+import Img from "@/components/ui/Img";
 import type { ImageItem } from "../types";
 
 interface ImagesSectionProps {
@@ -49,14 +49,13 @@ const ImageThumbnail: FC<{ image: ImageItem; onClick: () => void }> = ({
       onClick={onClick}
       className="aspect-square overflow-hidden rounded-lg bg-gray-100 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
     >
-      <Image
-        src={image.asset.url}
+      <Img
+        image={image}
         alt={image.performers || "Performance image"}
-        fill
-        className="object-cover"
+        width={400}
+        height={400}
+        className="object-cover w-full h-full"
         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        placeholder={image.asset.metadata?.lqip ? "blur" : "empty"}
-        blurDataURL={image.asset.metadata?.lqip ?? undefined}
       />
     </button>
   );
@@ -111,12 +110,12 @@ const Lightbox: FC<{ image: ImageItem; onClose: () => void }> = ({
         onKeyDown={(e) => e.stopPropagation()}
         role="none"
       >
-        <div className="relative w-full h-[80vh]">
-          <Image
-            src={image.asset.url}
+        <div className="flex items-center justify-center max-h-[80vh]">
+          <Img
+            image={image}
             alt={image.performers || "Performance image"}
-            fill
-            className="object-contain rounded-lg"
+            width={1200}
+            className="object-contain rounded-lg max-h-[80vh]"
             sizes="90vw"
             id="lightbox-image"
           />
