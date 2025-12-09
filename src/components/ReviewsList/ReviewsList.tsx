@@ -19,7 +19,7 @@ export const ReviewsList: FC<ReviewsListProps> = ({ reviews }) => {
       <div className="container mx-auto px-6 py-16 md:py-24 max-w-4xl">
         <header className="mb-20 flex flex-col items-center md:items-start">
           <h1 className="text-6xl md:text-8xl font-black tracking-tight">
-            Reviews
+            Reviewssss
           </h1>
           <div className="mt-4 h-2 w-32 bg-gray-900" />
         </header>
