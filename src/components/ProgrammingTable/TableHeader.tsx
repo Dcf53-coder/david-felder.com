@@ -4,8 +4,8 @@ interface TableHeaderProps {
 }
 
 export function TableHeader({
-  title = "Programming",
-  description = "David Felder's programming and performance history, featuring works by various composers and ensembles.",
+  title = "Concerts Programmed by Felder: 1986-2019 (Archived)",
+  description = "This section documents concerts programmed from 1986 through 2019 and is no longer being actively updated. For recent programming, please contact directly.",
 }: TableHeaderProps) {
   return (
     <header className="mb-20 flex flex-col items-center md:items-start">
