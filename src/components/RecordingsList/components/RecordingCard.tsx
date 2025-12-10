@@ -75,7 +75,7 @@ export const RecordingCard: FC<RecordingCardProps> = ({ recording }) => {
           {/* View Details Link */}
           <div className="pt-2">
             <span className="inline-flex items-center text-gold text-sm font-medium uppercase tracking-wider group-hover:text-navy transition-colors">
-              View Details
+              Read More
               <svg 
                 className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" 
                 fill="none" 
