@@ -225,89 +225,137 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
             </Section>
           )} */}
 
-          {/* Reviews */}
-{recording.relatedReviews && recording.relatedReviews.length > 0 && (
-  <Section title="Reviews">
-    <div className="space-y-8">
-      {recording.relatedReviews.map((review) => {
-        const reviewYear = review.reviewDate
-          ? new Date(review.reviewDate).getFullYear()
-          : null;
+          {/* Recording Reviews */}
+          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
+            <Section title="Recording Reviews">
+              <div className="space-y-8">
+                {recording.relatedReviews.map((review) => {
+                  // Cast to the proper type
+                  const typedReview = review as unknown as ReviewWithContent;
 
-        const attribution = [review.source, review.author, reviewYear]
-          .filter(Boolean)
-          .join(" | ");
+                  const reviewYear = typedReview.reviewDate
+                    ? new Date(typedReview.reviewDate).getFullYear()
+                    : null;
 
-        // Defensive access to review text
-        const reviewText =
-          ("body" in review && typeof review.body === "string" && review.body) ||
-          ("text" in review && typeof review.text === "string" && review.text) ||
-          ("content" in review && typeof review.content === "string" && review.content) ||
-          "";
+                  const attribution = [
+                    typedReview.source,
+                    typedReview.author,
+                    reviewYear,
+                  ]
+                    .filter(Boolean)
+                    .join(" • ");
 
+                  // Extract review text safely
+                  const getReviewText = (): string => {
+                    // Check if body exists
+                    if (!typedReview.body) return typedReview.excerpt || "";
 
-        const excerptLength = 320;
-        const excerpt =
-          reviewText.length > excerptLength
-            ? reviewText.slice(0, excerptLength) + "…"
-            : reviewText;
+                    // Handle Portable Text (array of blocks)
+                    if (Array.isArray(typedReview.body)) {
+                      return typedReview.body
+                        .filter(
+                          (block: any) =>
+                            block._type === "block" && block.children
+                        )
+                        .flatMap((block: any) =>
+                          block.children
+                            .filter((child: any) => child._type === "span")
+                            .map((child: any) => child.text)
+                        )
+                        .join(" ")
+                        .trim();
+                    }
 
-        return (
-          <article
-            key={review._id}
-            className="border border-gray-200 rounded-lg p-6 bg-white"
-          >
-            <h3 className="text-lg font-semibold mb-1">
-              {review.title}
-            </h3>
+                    // Handle string
+                    if (typeof typedReview.body === "string") {
+                      return typedReview.body;
+                    }
 
-            {attribution && (
-              <p className="text-sm text-gray-500 mb-4">
-                {attribution}
-              </p>
-            )}
+                    return typedReview.excerpt || "";
+                  };
 
-            {reviewText && (
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {excerpt}
-              </p>
-            )}
+                  const reviewText = getReviewText();
+                  const excerptLength = 280; // About 3-4 lines
+                  const excerpt =
+                    reviewText.length > excerptLength
+                      ? reviewText.slice(0, excerptLength) + "…"
+                      : reviewText;
 
-            {review.slug?.current && (
-              <div className="mt-4">
-                <Link
-                  href={`/reviews/${review.slug.current}`}
-                  className="inline-flex items-center text-sm font-medium text-accent hover:underline"
-                >
-                  Read more
-                  <svg
-                    className="ml-1 w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
+                  return (
+                    <article
+                      key={typedReview._id}
+                      className="border border-gray-200 rounded-lg p-6 bg-white hover:shadow-sm transition-shadow"
+                    >
+                      {/* Review Header */}
+                      <div className="mb-4">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                          {typedReview.title}
+                        </h3>
+
+                        {attribution && (
+                          <p className="text-sm text-gray-600">{attribution}</p>
+                        )}
+                      </div>
+
+                      {/* Review Excerpt */}
+                      {reviewText ? (
+                        <div className="mb-4">
+                          <p className="text-gray-700 italic">"{excerpt}"</p>
+                        </div>
+                      ) : (
+                        <p className="text-gray-400 italic mb-4">
+                          Review text not available
+                        </p>
+                      )}
+
+                      {/* Read More Link */}
+                      {typedReview.slug?.current && (
+                        <div className="pt-4 border-t border-gray-100">
+                          <Link
+                            href={`/reviews/${typedReview.slug.current}`}
+                            className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
+                          >
+                            Read full review
+                            <svg
+                              className="ml-1 w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"
+                              />
+                            </svg>
+                          </Link>
+                        </div>
+                      )}
+                    </article>
+                  );
+                })}
               </div>
-            )}
-          </article>
-        );
-      })}
-    </div>
-  </Section>
-)}
-
+            </Section>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
+interface ReviewWithContent {
+  _id: string;
+  title: string;
+  slug?: { current: string };
+  source?: string;
+  author?: string;
+  reviewDate?: string;
+  body?: any; // Portable Text or string
+  excerpt?: string;
+  reviewLink?: string;
+  reviewType?: string;
+}
 
 interface PieceItemProps {
   piece: NonNullable<RecordingDetailData["pieces"]>[number];

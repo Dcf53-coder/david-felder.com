@@ -51,7 +51,11 @@ const RECORDING_DETAIL_QUERY =
     slug,
     source,
     author,
-    reviewDate
+    reviewDate,
+    reviewType,
+    body,
+    reviewLink,
+    excerpt
   }
 }`);
 

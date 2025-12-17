@@ -522,7 +522,7 @@ export type ALL_RECORDING_SLUGS_QUERYResult = Array<{
   slug: string | null;
 }>;
 // Variable: RECORDING_DETAIL_QUERY
-// Query: *[_type == "recording" && slug.current == $slug][0]{  _id,  title,  slug,  recordLabel,  catalogNumber,  releaseDate,  albumLink,  purchaseLink,  isFeatured,  albumArt {    asset -> {      _id,      url,      metadata {        dimensions {          width,          height,          aspectRatio        },        lqip      }    }  },  pieces[] {    _key,    performers,    piece -> {      _id,      title,      slug    }  },  "relatedReviews": *[_type == "review" && references(^._id)]{    _id,    title,    slug,    source,    author,    reviewDate  }}
+// Query: *[_type == "recording" && slug.current == $slug][0]{  _id,  title,  slug,  recordLabel,  catalogNumber,  releaseDate,  albumLink,  purchaseLink,  isFeatured,  albumArt {    asset -> {      _id,      url,      metadata {        dimensions {          width,          height,          aspectRatio        },        lqip      }    }  },  pieces[] {    _key,    performers,    piece -> {      _id,      title,      slug    }  },  "relatedReviews": *[_type == "review" && references(^._id)]{    _id,    title,    slug,    source,    author,    reviewDate,    reviewType,    body,    reviewLink,    excerpt  }}
 export type RECORDING_DETAIL_QUERYResult = {
   _id: string;
   title: string | null;
@@ -563,6 +563,10 @@ export type RECORDING_DETAIL_QUERYResult = {
     source: string | null;
     author: string | null;
     reviewDate: string | null;
+    reviewType: null;
+    body: BlockContent | null;
+    reviewLink: string | null;
+    excerpt: BlockContent | null;
   }>;
 } | null;
 
@@ -828,7 +832,7 @@ declare module "@sanity/client" {
     "*[_type == \"aboutPage\"][0]{\n  title,\n  body,\n  vitalInfo,\n  otherLinks,\n  images[]{\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    },\n    caption,\n    alt,\n    credits\n  },\n  streamEmbed\n}": ABOUT_PAGE_QUERYResult;
     "*[_type == \"performance\"] | order(programDate desc) {\n  _id,\n  programTitle,\n  composer,\n  context,\n  ensemble,\n  instrumentation,\n  personnel,\n  programWork,\n  programDate\n}": PROGRAMMING_QUERYResult;
     "*[_type == \"recording\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_RECORDING_SLUGS_QUERYResult;
-    "*[_type == \"recording\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  catalogNumber,\n  releaseDate,\n  albumLink,\n  purchaseLink,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  pieces[] {\n    _key,\n    performers,\n    piece -> {\n      _id,\n      title,\n      slug\n    }\n  },\n  \"relatedReviews\": *[_type == \"review\" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate\n  }\n}": RECORDING_DETAIL_QUERYResult;
+    "*[_type == \"recording\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  catalogNumber,\n  releaseDate,\n  albumLink,\n  purchaseLink,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        dimensions {\n          width,\n          height,\n          aspectRatio\n        },\n        lqip\n      }\n    }\n  },\n  pieces[] {\n    _key,\n    performers,\n    piece -> {\n      _id,\n      title,\n      slug\n    }\n  },\n  \"relatedReviews\": *[_type == \"review\" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    source,\n    author,\n    reviewDate,\n    reviewType,\n    body,\n    reviewLink,\n    excerpt\n  }\n}": RECORDING_DETAIL_QUERYResult;
     "*[_type == \"recording\"]{\n  _id,\n  title,\n  slug,\n  recordLabel,\n  releaseDate,\n  isFeatured,\n  albumArt {\n    asset -> {\n      _id,\n      url,\n      metadata {\n        lqip\n      }\n    }\n  }\n}": RECORDINGS_LISTING_QUERYResult;
     "*[_type == \"review\" && defined(slug.current)]{\n  \"slug\": slug.current\n}": ALL_REVIEW_SLUGS_QUERYResult;
     "*[_type == \"review\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  body,\n  excerpt,\n  reviewDate,\n  source,\n  author,\n  reviewLink,\n  relatedWorks[] -> {\n    _id,\n    title,\n    slug\n  },\n  relatedRecordings[] -> {\n    _id,\n    title,\n    slug,\n    recordLabel\n  }\n}": REVIEW_DETAIL_QUERYResult;
