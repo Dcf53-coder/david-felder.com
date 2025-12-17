@@ -179,7 +179,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
           )}
 
           {/* Related Reviews */}
-          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
+          {/* {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Related Reviews">
               <ul className="space-y-6">
                 {recording.relatedReviews.map((review) => {
@@ -223,7 +223,86 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                 })}
               </ul>
             </Section>
-          )}
+          )} */}
+
+          {/* Reviews */}
+{recording.relatedReviews && recording.relatedReviews.length > 0 && (
+  <Section title="Reviews">
+    <div className="space-y-8">
+      {recording.relatedReviews.map((review) => {
+        const reviewYear = review.reviewDate
+          ? new Date(review.reviewDate).getFullYear()
+          : null;
+
+        const attribution = [review.source, review.author, reviewYear]
+          .filter(Boolean)
+          .join(" | ");
+
+        // Defensive access to review text
+        const reviewText =
+          ("body" in review && typeof review.body === "string" && review.body) ||
+          ("text" in review && typeof review.text === "string" && review.text) ||
+          ("content" in review && typeof review.content === "string" && review.content) ||
+          "";
+
+
+        const excerptLength = 320;
+        const excerpt =
+          reviewText.length > excerptLength
+            ? reviewText.slice(0, excerptLength) + "…"
+            : reviewText;
+
+        return (
+          <article
+            key={review._id}
+            className="border border-gray-200 rounded-lg p-6 bg-white"
+          >
+            <h3 className="text-lg font-semibold mb-1">
+              {review.title}
+            </h3>
+
+            {attribution && (
+              <p className="text-sm text-gray-500 mb-4">
+                {attribution}
+              </p>
+            )}
+
+            {reviewText && (
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                {excerpt}
+              </p>
+            )}
+
+            {review.slug?.current && (
+              <div className="mt-4">
+                <Link
+                  href={`/reviews/${review.slug.current}`}
+                  className="inline-flex items-center text-sm font-medium text-accent hover:underline"
+                >
+                  Read more
+                  <svg
+                    className="ml-1 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </Section>
+)}
+
         </div>
       </div>
     </div>
