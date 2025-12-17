@@ -3,60 +3,10 @@ import type { FC } from "react";
 import Img from "@/components/ui/Img";
 import { Section } from "@/components/WorkDetail";
 import type { RecordingDetailData } from "./types";
-import { useState } from "react";
 
 interface RecordingDetailProps {
   recording: RecordingDetailData;
 }
-
-const ReviewCard: FC<{ review: any }> = ({ review }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  const text =
-    review.body ||
-    review.text ||
-    review.content ||
-    "";
-
-  const excerptLength = 300;
-
-  const showText = expanded
-    ? text
-    : text.slice(0, excerptLength);
-
-  const attribution = [review.source, review.author]
-    .filter(Boolean)
-    .join(" · ");
-
-  return (
-    <div className="border border-gray-200 rounded-lg p-6 bg-white">
-      <h4 className="text-lg font-semibold mb-1">
-        {review.title}
-      </h4>
-
-      {attribution && (
-        <p className="text-sm text-gray-500 mb-3">
-          {attribution}
-        </p>
-      )}
-
-      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-        {showText}
-        {!expanded && text.length > excerptLength && "…"}
-      </p>
-
-      {text.length > excerptLength && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-3 text-sm font-medium text-accent hover:underline"
-        >
-          {expanded ? "Read less" : "Read more"}
-        </button>
-      )}
-    </div>
-  );
-};
-
 
 export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
   const releaseYear = recording.releaseDate
@@ -228,7 +178,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
             </Section>
           )}
 
-          {/* Related Reviews
+          {/* Related Reviews */}
           {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Related Reviews">
               <ul className="space-y-6">
@@ -273,18 +223,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                 })}
               </ul>
             </Section>
-          )} */}
-
-          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
-            <Section title="Reviews">
-              <div className="space-y-8">
-                {recording.relatedReviews.map((review) => (
-                  <ReviewCard key={review._id} review={review} />
-                ))}
-              </div>
-            </Section>
           )}
-
         </div>
       </div>
     </div>
