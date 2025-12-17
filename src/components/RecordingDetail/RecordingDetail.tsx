@@ -179,7 +179,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
           )}
 
           {/* Related Reviews */}
-          {/* {recording.relatedReviews && recording.relatedReviews.length > 0 && (
+          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Related Reviews">
               <ul className="space-y-6">
                 {recording.relatedReviews.map((review) => {
@@ -223,10 +223,10 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                 })}
               </ul>
             </Section>
-          )} */}
+          )}
 
           {/* Recording Reviews */}
-          {recording.relatedReviews && recording.relatedReviews.length > 0 && (
+          {/* {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Recording Reviews">
               <div className="space-y-8">
                 {recording.relatedReviews.map((review) => {
@@ -337,7 +337,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                 })}
               </div>
             </Section>
-          )}
+          )} */}
         </div>
       </div>
     </div>
