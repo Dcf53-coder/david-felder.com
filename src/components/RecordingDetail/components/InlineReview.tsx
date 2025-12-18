@@ -70,7 +70,7 @@ export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-xs font-mono font-bold uppercase tracking-widest text-gray-900 hover:text-accent transition-colors flex items-center gap-2"
         >
-          {isExpanded ? "↑ Show Less" : "↓ Read Full Review"}
+          {isExpanded ? "↑ Show Less" : "↓ Read More"}
         </button>
 
         {review.url && (
