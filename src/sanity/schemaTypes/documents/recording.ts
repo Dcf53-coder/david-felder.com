@@ -93,6 +93,52 @@ export const recording = defineType({
         },
       ],
     }),
+    // --- NEW REVIEWS FIELD ADDED BELOW ---
+    defineField({
+      name: "reviews",
+      title: "CD / Recording Reviews",
+      type: "array",
+      description: "Add reviews specific to this recording.",
+      of: [
+        {
+          type: "object",
+          name: "review",
+          fields: [
+            {
+              name: "source",
+              title: "Source / Publication",
+              type: "string",
+              description: "e.g., Gramophone, NY Times",
+            },
+            {
+              name: "excerpt",
+              title: "Substantial Lines (Short Excerpt)",
+              type: "text",
+              rows: 3,
+              description: "This part shows before the 'Read More' button.",
+            },
+            {
+              name: "fullReview",
+              title: "Full Review Text",
+              type: "blockContent", 
+              description: "The complete text that appears after clicking 'Read More'.",
+            },
+            {
+              name: "url",
+              title: "Link to Original Review",
+              type: "url",
+            }
+          ],
+          preview: {
+            select: {
+              title: "source",
+              subtitle: "excerpt",
+            },
+          },
+        },
+      ],
+    }),
+    // --- END OF NEW FIELD ---
     defineField({
       name: "isFeatured",
       title: "Featured?",
