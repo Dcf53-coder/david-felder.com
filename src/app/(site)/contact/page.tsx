@@ -82,29 +82,7 @@ export default function ContactPage() {
 
           {/* Right Column: Detailed Biography & Legacy */}
           <div className="lg:col-span-7 space-y-12 bg-gray-50 p-8 md:p-12 rounded-xl">
-            <section>
-              <h2 className="text-sm font-mono uppercase tracking-widest text-accent mb-6 font-bold">
-                Biographical Profile
-              </h2>
-              <div className="prose prose-lg prose-gray max-w-none font-light leading-relaxed">
-                <p>
-                  David Felder has long been recognized as a leader in his
-                  generation of American composers. His work is broadly
-                  characterized by its highly energetic profile, the employment
-                  of technological extension, and its deep lyrical qualities.
-                </p>
-                <p>
-                  During his tenure at the University at Buffalo from 1985
-                  through 2023, he served as a dedicated teacher and mentor,
-                  acting as Ph.D. dissertation advisor for
-                  <strong> over eighty composers</strong>. He pioneered the
-                  "June in Buffalo" festival, dedicating it to nearly 1,000
-                  emerging composers over nearly four decades.
-                </p>
-              </div>
-            </section>
-
-            <section className="pt-8 border-t border-gray-200">
+            <section className="pt-8">
               <h2 className="text-sm font-mono uppercase tracking-widest text-accent mb-6 font-bold">
                 Select Awards & Honors
               </h2>
