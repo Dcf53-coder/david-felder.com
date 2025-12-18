@@ -30,7 +30,7 @@ export const GlobalHeader = () => {
               <NavLink href="/reviews">Reviews</NavLink>
             </li>
             <li>
-              <a href="mailto:felder@david-felder.com">Contact</a>
+              <NavLink href="/contact">Contact</NavLink>
             </li>
           </ul>
         </nav>
