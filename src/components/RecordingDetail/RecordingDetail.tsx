@@ -3,6 +3,7 @@ import type { FC } from "react";
 import Img from "@/components/ui/Img";
 import { Section } from "@/components/WorkDetail";
 import type { RecordingDetailData } from "./types";
+import { InlineReview } from "./components/InlineReview";
 
 interface RecordingDetailProps {
   recording: RecordingDetailData;
@@ -31,7 +32,6 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
         {/* Header */}
         <header className="mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-            {/* Album Art */}
             <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100">
               {recording.albumArt ? (
                 <Img
@@ -50,7 +50,6 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -63,7 +62,6 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
               )}
             </div>
 
-            {/* Info */}
             <div className="flex flex-col justify-center">
               <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-4">
                 {recording.title}
@@ -103,7 +101,6 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                 )}
               </dl>
 
-              {/* Links */}
               {hasLinks && (
                 <div className="mt-8 flex flex-wrap gap-4">
                   {recording.albumLink && (
@@ -119,10 +116,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        aria-hidden="false"
-                        role="img"
                       >
-                        <title>External link to album</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -138,7 +132,6 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:border-accent hover:text-accent transition-colors"
-                      aria-label="Purchase"
                     >
                       Purchase
                       <svg
@@ -146,10 +139,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        aria-hidden="false"
-                        role="img"
                       >
-                        <title>External link to purchase</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -165,9 +155,8 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
           </div>
         </header>
 
-        {/* Main content */}
         <div className="space-y-16">
-          {/* Pieces on this recording */}
+          {/* Featured Works */}
           {recording.pieces && recording.pieces.length > 0 && (
             <Section title="Featured Works">
               <div className="space-y-0">
@@ -178,163 +167,16 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
             </Section>
           )}
 
-          {/* Related Reviews */}
-          {/* {recording.relatedReviews && recording.relatedReviews.length > 0 && (
-            <Section title="Related Reviews">
-              <ul className="space-y-6">
-                {recording.relatedReviews.map((review) => {
-                  const reviewYear = review.reviewDate
-                    ? new Date(review.reviewDate).getFullYear()
-                    : null;
-                  const attribution = [review.source, review.author, reviewYear]
-                    .filter(Boolean)
-                    .join(" | ");
-
-                  return (
-                    <li key={review._id}>
-                      {review.slug?.current ? (
-                        <Link
-                          href={`/reviews/${review.slug.current}`}
-                          className="block group"
-                        >
-                          <span className="text-lg font-semibold group-hover:text-accent transition-colors">
-                            {review.title}
-                          </span>
-                          {attribution && (
-                            <span className="block text-sm text-gray-500 mt-1">
-                              {attribution}
-                            </span>
-                          )}
-                        </Link>
-                      ) : (
-                        <div>
-                          <span className="block text-lg font-semibold text-gray-400">
-                            {review.title}
-                          </span>
-                          {attribution && (
-                            <span className="block text-sm text-gray-400 mt-1">
-                              {attribution}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Section>
-          )} */}
-
-          {/* Recording Reviews */}
+          {/* Recording Reviews Section */}
           {recording.relatedReviews && recording.relatedReviews.length > 0 && (
             <Section title="Recording Reviews">
-              <div className="space-y-8">
-                {recording.relatedReviews.map((review) => {
-                  // Cast to the proper type
-                  const typedReview = review as unknown as ReviewWithContent;
-
-                  const reviewYear = typedReview.reviewDate
-                    ? new Date(typedReview.reviewDate).getFullYear()
-                    : null;
-
-                  const attribution = [
-                    typedReview.source,
-                    typedReview.author,
-                    reviewYear,
-                  ]
-                    .filter(Boolean)
-                    .join(" • ");
-
-                  // Extract review text safely
-                  const getReviewText = (): string => {
-                    // Check if body exists
-                    if (!typedReview.body) return typedReview.excerpt || "";
-
-                    // Handle Portable Text (array of blocks)
-                    if (Array.isArray(typedReview.body)) {
-                      return typedReview.body
-                        .filter(
-                          (block: any) =>
-                            block._type === "block" && block.children
-                        )
-                        .flatMap((block: any) =>
-                          block.children
-                            .filter((child: any) => child._type === "span")
-                            .map((child: any) => child.text)
-                        )
-                        .join(" ")
-                        .trim();
-                    }
-
-                    // Handle string
-                    if (typeof typedReview.body === "string") {
-                      return typedReview.body;
-                    }
-
-                    return typedReview.excerpt || "";
-                  };
-
-                  const reviewText = getReviewText();
-                  const excerptLength = 280; // About 3-4 lines
-                  const excerpt =
-                    reviewText.length > excerptLength
-                      ? reviewText.slice(0, excerptLength) + "…"
-                      : reviewText;
-
-                  return (
-                    <article
-                      key={typedReview._id}
-                      className="border border-gray-200 rounded-lg p-6 bg-white hover:shadow-sm transition-shadow"
-                    >
-                      {/* Review Header */}
-                      <div className="mb-4">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                          {typedReview.title}
-                        </h3>
-
-                        {attribution && (
-                          <p className="text-sm text-gray-600">{attribution}</p>
-                        )}
-                      </div>
-
-                      {/* Review Excerpt */}
-                      {reviewText ? (
-                        <div className="mb-4">
-                          <p className="text-gray-700 italic">"{excerpt}"</p>
-                        </div>
-                      ) : (
-                        <p className="text-gray-400 italic mb-4">
-                          Review text not available
-                        </p>
-                      )}
-
-                      {/* Read More Link */}
-                      {typedReview.slug?.current && (
-                        <div className="pt-4 border-t border-gray-100">
-                          <Link
-                            href={`/reviews/${typedReview.slug.current}`}
-                            className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
-                          >
-                            Read full review
-                            <svg
-                              className="ml-1 w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"
-                              />
-                            </svg>
-                          </Link>
-                        </div>
-                      )}
-                    </article>
-                  );
-                })}
+              <div className="grid grid-cols-1 gap-8">
+                {recording.relatedReviews.map((review) => (
+                  <InlineReview
+                    key={review._id}
+                    review={review as unknown as ReviewWithContent}
+                  />
+                ))}
               </div>
             </Section>
           )}
@@ -344,6 +186,7 @@ export const RecordingDetail: FC<RecordingDetailProps> = ({ recording }) => {
   );
 };
 
+// Interface for type casting within the component
 interface ReviewWithContent {
   _id: string;
   title: string;
@@ -351,10 +194,10 @@ interface ReviewWithContent {
   source?: string;
   author?: string;
   reviewDate?: string;
-  body?: any; // Portable Text or string
+  body?: any;
   excerpt?: string;
   reviewLink?: string;
-  reviewType?: string;
+  url?: string; // Ensure this matches what InlineReview expects
 }
 
 interface PieceItemProps {
@@ -380,9 +223,5 @@ const PieceItem: FC<PieceItemProps> = ({ piece }) => {
     </div>
   );
 
-  if (href) {
-    return <Link href={href}>{content}</Link>;
-  }
-
-  return content;
+  return href ? <Link href={href}>{content}</Link> : content;
 };
