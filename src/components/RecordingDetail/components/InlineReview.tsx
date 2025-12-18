@@ -6,18 +6,32 @@ import { PortableText } from "@portabletext/react";
 interface InlineReviewProps {
   review: {
     source?: string;
-    author?: string; // Added to match your data
+    author?: string;
     excerpt?: string;
-    body?: any; // Changed from fullReview to body
+    body?: any; // This is the Portable Text from Sanity
     url?: string;
-    reviewDate?: string; // Added to match your data
   };
 }
 
 export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Logic to show Author if source is missing, or combine them
+  // 1. Helper to find the first bit of text if 'excerpt' is missing
+  const getFallbackExcerpt = () => {
+    if (review.excerpt) return review.excerpt;
+
+    // If no excerpt, try to grab the first string from the Portable Text body
+    if (Array.isArray(review.body)) {
+      const firstBlock = review.body.find(
+        (block: any) => block._type === "block"
+      );
+      const firstText = firstBlock?.children?.map((c: any) => c.text).join("");
+      return firstText ? firstText.substring(0, 180) + "..." : "";
+    }
+    return "";
+  };
+
+  const displayExcerpt = getFallbackExcerpt();
   const attribution = [review.source, review.author]
     .filter(Boolean)
     .join(" — ");
@@ -33,20 +47,25 @@ export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
 
       <div className="text-gray-800 leading-relaxed text-lg font-light italic">
         {!isExpanded ? (
-          <p>"{review.excerpt}"</p>
+          // Show excerpt initially
+          <p>
+            {displayExcerpt
+              ? `"${displayExcerpt}"`
+              : "Click to read review details"}
+          </p>
         ) : (
+          // Show full Portable Text when clicked
           <div className="not-italic prose prose-gray max-w-none">
-            {/* Changed from fullReview to body */}
             {review.body ? (
               <PortableText value={review.body} />
             ) : (
-              <p>"{review.excerpt}"</p>
+              <p>{displayExcerpt}</p>
             )}
           </div>
         )}
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
+      <div className="mt-6 flex items-center justify-between border-t border-gray-50 pt-4">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-xs font-mono font-bold uppercase tracking-widest text-gray-900 hover:text-accent transition-colors flex items-center gap-2"
@@ -54,7 +73,6 @@ export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
           {isExpanded ? "↑ Show Less" : "↓ Read Full Review"}
         </button>
 
-        {/* review.url should match your Sanity field (often called reviewLink) */}
         {review.url && (
           <a
             href={review.url}
