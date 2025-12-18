@@ -13,7 +13,7 @@ export default function ContactPage() {
         {/* Header Section */}
         <header className="mb-20">
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-6">
-            Contact <span className="text-gray-300">&</span> Info
+            Contact
           </h1>
           <div className="h-2 w-32 bg-accent" />
         </header>
