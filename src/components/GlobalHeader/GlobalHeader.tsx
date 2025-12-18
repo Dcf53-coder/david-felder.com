@@ -21,13 +21,13 @@ export const GlobalHeader = () => {
               <NavLink href="/works">Works</NavLink>
             </li>
             <li>
-              <NavLink href="/programming">Programming</NavLink>
-            </li>
-            <li>
               <NavLink href="/recordings">Recordings</NavLink>
             </li>
             <li>
               <NavLink href="/reviews">Reviews</NavLink>
+            </li>
+            <li>
+              <NavLink href="/programming">Programming</NavLink>
             </li>
             <li>
               <NavLink href="/contact">Contact</NavLink>
