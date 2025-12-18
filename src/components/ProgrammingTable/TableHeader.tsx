@@ -4,19 +4,20 @@ interface TableHeaderProps {
 }
 
 export function TableHeader({
-  title = "Concerts programmed by Felder: 1986 through 2019 (not updated)",
-  description = "David Felder's programming and performance history, featuring works by various composers and ensembles.",
+  title = "Programming",
+  description = "Concerts programmed by Felder: 1986 through 2019 (not updated)",
 }: TableHeaderProps) {
   return (
-    <header className="mb-20 flex flex-col items-center md:items-end md:text-right md:ml-auto max-w-4xl">
-      <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+    <header className="mb-20 flex flex-col items-center md:items-end md:text-right md:ml-auto max-w-3xl">
+      <h1 className="text-6xl md:text-8xl font-black tracking-tight uppercase">
         {title}
       </h1>
 
-      {/* Pushes the accent bar to the right to match the text */}
+      {/* The bar now aligns to the right because of items-end */}
       <div className="mt-4 h-2 w-32 bg-foreground" />
 
-      <p className="mt-6 text-xl text-gray-600 max-w-2xl leading-relaxed">
+      {/* Increased the size and changed font weight for the Felder quote */}
+      <p className="mt-6 text-xl md:text-2xl text-gray-900 font-medium leading-relaxed italic">
         {description}
       </p>
     </header>
