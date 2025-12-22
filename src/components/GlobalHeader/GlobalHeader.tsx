@@ -27,7 +27,7 @@ export const GlobalHeader = () => {
               <NavLink href="/reviews">Reviews</NavLink>
             </li>
             <li>
-              <NavLink href="/programming">Programming</NavLink>
+              <NavLink href="/programming">Programmings</NavLink>
             </li>
             <li>
               <NavLink href="/contact">Contact</NavLink>
