@@ -51,10 +51,10 @@ function ReviewItem({ review }: { review: Review }) {
     <div className="group border-b border-gray-300 py-12 last:border-0">
       <div className="flex flex-col gap-4">
         <div>
-          <h3 className="text-2xl font-serif font-bold text-[#1a1a1a] leading-tight mb-2 group-hover:text-[#8b0000] transition-colors">
+          <h3 className="text-2xl font-serif font-bold text-[#1a1a1a] leading-tight mb-2 group-hover:var(--accent) transition-colors">
             {review.title}
           </h3>
-          <p className="text-sm font-bold text-[#8b0000] uppercase tracking-[0.1em] mb-4">
+          <p className="text-sm font-bold color-var(--accent) uppercase tracking-[0.1em] mb-4">
             {[review.source, review.author].filter(Boolean).join(" — ")}
           </p>
         </div>
