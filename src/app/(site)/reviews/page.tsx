@@ -77,7 +77,7 @@ export default async function ReviewsPage() {
         <h1 className="text-6xl md:text-8xl font-black tracking-tight">
           Reviews
         </h1>
-        <div className="mt-4 h-2 w-32 bg-gray-900" />
+        <div className="mt-4 h-2 w-32 bg-[#8b0000]" />
       </header>
 
       <section className="mb-24">
