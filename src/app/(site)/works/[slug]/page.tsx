@@ -185,9 +185,11 @@ export async function generateStaticParams() {
 export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const { slug } = await params;
 
+  const decodedSlug = decodeURIComponent(slug);
+
   const { data: work } = await sanityFetch({
     query: WORK_DETAIL_QUERY,
-    params: { slug },
+    params: { slug: decodedSlug },
   });
 
   if (!work) {
@@ -201,9 +203,11 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 export async function generateMetadata({ params }: WorkDetailPageProps) {
   const { slug } = await params;
 
+  const decodedSlug = decodeURIComponent(slug);
+
   const { data: work } = await sanityFetch({
     query: WORK_DETAIL_QUERY,
-    params: { slug },
+    params: { slug: decodedSlug },
   });
 
   if (!work) {
