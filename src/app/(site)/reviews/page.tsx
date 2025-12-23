@@ -3,22 +3,34 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
+import { PortableText } from "@portabletext/react";
 
 export const metadata: Metadata = {
   title: "Reviews | David Felder",
   description: "Recording and Performance reviews for David Felder.",
 };
 
-const REVIEWS_QUERY =
-  defineQuery(`*[_type == "review"] | order(reviewDate desc) {
-  _id,
-  title,
-  "slug": slug.current,
-  reviewType,
-  source,
-  author,
-  reviewLink,
-  excerpt
+const REVIEWS_QUERY = defineQuery(`{
+  "recording": *[_type == "review" && reviewType == "recording"] | order(reviewDate desc)[0...10] {
+    _id,
+    title,
+    "slug": slug.current,
+    reviewType,
+    source,
+    author,
+    reviewLink,
+    excerpt
+  },
+  "performance": *[_type == "review" && reviewType == "performance"] | order(reviewDate desc)[0...10] {
+    _id,
+    title,
+    "slug": slug.current,
+    reviewType,
+    source,
+    author,
+    reviewLink,
+    excerpt
+  }
 }`);
 
 interface Review {
@@ -36,16 +48,25 @@ function ReviewItem({ review }: { review: Review }) {
   const isValidLink = review.reviewLink && review.reviewLink.startsWith("http");
 
   return (
-    <div className="group border-b border-gray-300 py-10 last:border-0">
-      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4">
-        <div className="flex-1">
+    <div className="group border-b border-gray-300 py-12 last:border-0">
+      <div className="flex flex-col gap-4">
+        <div>
           <h3 className="text-2xl font-serif font-bold text-[#1a1a1a] leading-tight mb-2 group-hover:text-[#8b0000] transition-colors">
             {review.title}
           </h3>
           <p className="text-sm font-bold text-[#8b0000] uppercase tracking-[0.1em] mb-4">
             {[review.source, review.author].filter(Boolean).join(" — ")}
           </p>
-          {isValidLink && (
+        </div>
+
+        {review.excerpt && (
+          <div className="text-[#333] font-serif leading-relaxed text-lg max-w-3xl italic">
+            <PortableText value={review.excerpt} />
+          </div>
+        )}
+
+        {isValidLink && (
+          <div className="mt-2">
             <Link
               href={review.reviewLink!}
               target="_blank"
@@ -54,27 +75,21 @@ function ReviewItem({ review }: { review: Review }) {
             >
               Read More
             </Link>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default async function ReviewsPage() {
-  const { data: reviews } = await sanityFetch({ query: REVIEWS_QUERY });
-
-  const recordingReviews = reviews.filter(
-    (r: Review) => r.reviewType === "recording"
-  );
-  const performanceReviews = reviews.filter(
-    (r: Review) => r.reviewType === "performance"
-  );
+  const { data } = await sanityFetch({ query: REVIEWS_QUERY });
+  const { recording = [], performance = [] } = data;
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-20">
       <header className="mb-20 flex flex-col items-center md:items-start">
-        <h1 className="text-6xl md:text-8xl font-black tracking-tight">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tight text-[#1a1a1a]">
           Reviews
         </h1>
         <div className="mt-4 h-2 w-32 bg-[#8b0000]" />
@@ -87,9 +102,9 @@ export default async function ReviewsPage() {
           </h2>
           <div className="flex-1 h-[1px] bg-[#1a1a1a] ml-4"></div>
         </div>
-        {recordingReviews.length > 0 ? (
-          <div className="space-y-2">
-            {recordingReviews.map((review: Review) => (
+        {recording.length > 0 ? (
+          <div className="divide-y divide-gray-300">
+            {recording.map((review: Review) => (
               <ReviewItem key={review._id} review={review} />
             ))}
           </div>
@@ -107,9 +122,9 @@ export default async function ReviewsPage() {
           </h2>
           <div className="flex-1 h-[1px] bg-[#8b0000] ml-4"></div>
         </div>
-        {performanceReviews.length > 0 ? (
-          <div className="space-y-2">
-            {performanceReviews.map((review: Review) => (
+        {performance.length > 0 ? (
+          <div className="divide-y divide-gray-300">
+            {performance.map((review: Review) => (
               <ReviewItem key={review._id} review={review} />
             ))}
           </div>
