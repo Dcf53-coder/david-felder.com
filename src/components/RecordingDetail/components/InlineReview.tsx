@@ -7,8 +7,8 @@ interface InlineReviewProps {
   review: {
     source?: string;
     author?: string;
-    excerpt?: string;
-    body?: any; // This is the Portable Text from Sanity
+    excerpt?: any; // Changed to any because it's Portable Text
+    body?: any; // Portable Text from Sanity
     url?: string;
   };
 }
@@ -16,22 +16,6 @@ interface InlineReviewProps {
 export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // 1. Helper to find the first bit of text if 'excerpt' is missing
-  const getFallbackExcerpt = () => {
-    if (review.excerpt) return review.excerpt;
-
-    // If no excerpt, try to grab the first string from the Portable Text body
-    if (Array.isArray(review.body)) {
-      const firstBlock = review.body.find(
-        (block: any) => block._type === "block"
-      );
-      const firstText = firstBlock?.children?.map((c: any) => c.text).join("");
-      return firstText ? firstText.substring(0, 180) + "..." : "";
-    }
-    return "";
-  };
-
-  const displayExcerpt = getFallbackExcerpt();
   const attribution = [review.source, review.author]
     .filter(Boolean)
     .join(" — ");
@@ -47,19 +31,21 @@ export const InlineReview: FC<InlineReviewProps> = ({ review }) => {
 
       <div className="text-gray-800 leading-relaxed text-lg font-light italic">
         {!isExpanded ? (
-          // Show excerpt initially
-          <p>
-            {displayExcerpt
-              ? `"${displayExcerpt}"`
-              : "Click to read review details"}
-          </p>
+          /* FIX: Use PortableText even for the excerpt to avoid [object Object] */
+          <div className="line-clamp-3">
+            {review.excerpt ? (
+              <PortableText value={review.excerpt} />
+            ) : (
+              <p>Click to read review details</p>
+            )}
+          </div>
         ) : (
-          // Show full Portable Text when clicked
+          /* Show full Portable Text body when expanded */
           <div className="not-italic prose prose-gray max-w-none">
             {review.body ? (
               <PortableText value={review.body} />
             ) : (
-              <p>{displayExcerpt}</p>
+              <PortableText value={review.excerpt} />
             )}
           </div>
         )}
