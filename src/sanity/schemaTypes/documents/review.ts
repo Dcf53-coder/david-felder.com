@@ -1,3 +1,4 @@
+// sanity/schemas/review.ts
 import { defineField, defineType } from "sanity";
 
 export const review = defineType({
@@ -12,6 +13,19 @@ export const review = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "reviewType",
+      title: "Review Category",
+      type: "string",
+      options: {
+        list: [
+          { title: "Recording", value: "recording" },
+          { title: "Performance", value: "performance" },
+        ],
+        layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -20,44 +34,6 @@ export const review = defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "relatedWorks",
-      title: "Related Pieces",
-      type: "array",
-      description: "Select any pieces referenced in the review",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "work" }],
-        },
-      ],
-    }),
-    defineField({
-      name: "relatedRecordings",
-      title: "Related Recording(s)",
-      type: "array",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "recording" }],
-        },
-      ],
-    }),
-    defineField({
-      name: "body",
-      title: "Body",
-      type: "blockContent",
-    }),
-    defineField({
-      name: "excerpt",
-      title: "Excerpt",
-      type: "blockContent",
-    }),
-    defineField({
-      name: "reviewDate",
-      title: "Review Date",
-      type: "date",
     }),
     defineField({
       name: "source",
@@ -70,25 +46,49 @@ export const review = defineType({
       type: "string",
     }),
     defineField({
+      name: "reviewDate",
+      title: "Review Date",
+      type: "date",
+    }),
+    defineField({
       name: "reviewLink",
       title: "Review Link",
       type: "url",
+      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
+    }),
+    defineField({
+      name: "excerpt",
+      title: "Excerpt",
+      type: "blockContent",
+    }),
+    defineField({
+      name: "body",
+      title: "Body",
+      type: "blockContent",
+    }),
+    defineField({
+      name: "relatedWorks",
+      title: "Related Pieces",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "work" }] }],
+    }),
+    defineField({
+      name: "relatedRecordings",
+      title: "Related Recording(s)",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "recording" }] }],
     }),
   ],
   preview: {
     select: {
       title: "title",
       source: "source",
-      author: "author",
-      reviewDate: "reviewDate",
+      type: "reviewType",
     },
-    prepare({ title, source, author, reviewDate }) {
-      const parts = [source, author].filter(Boolean);
-      const year = reviewDate ? new Date(reviewDate).getFullYear() : "";
-      if (year) parts.push(String(year));
+    prepare({ title, source, type }) {
       return {
         title,
-        subtitle: parts.join(" | "),
+        subtitle: `${type?.toUpperCase() || "NO TYPE"} | ${source || "No Source"}`,
       };
     },
   },
@@ -97,16 +97,6 @@ export const review = defineType({
       title: "Review Date (newest)",
       name: "reviewDateDesc",
       by: [{ field: "reviewDate", direction: "desc" }],
-    },
-    {
-      title: "Review Date (oldest)",
-      name: "reviewDateAsc",
-      by: [{ field: "reviewDate", direction: "asc" }],
-    },
-    {
-      title: "Title",
-      name: "titleAsc",
-      by: [{ field: "title", direction: "asc" }],
     },
   ],
 });
