@@ -73,13 +73,11 @@ export default async function ReviewsPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-20">
-      <header className="mb-20 border-l-8 border-[#8b0000] pl-8">
-        <h1 className="text-6xl font-serif font-bold text-[#1a1a1a] tracking-tight mb-4">
+      <header className="mb-20 flex flex-col items-center md:items-start">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tight">
           Reviews
         </h1>
-        <p className="text-gray-600 italic font-serif text-lg">
-          Critical reception and press commentary.
-        </p>
+        <div className="mt-4 h-2 w-32 bg-gray-900" />
       </header>
 
       <section className="mb-24">
