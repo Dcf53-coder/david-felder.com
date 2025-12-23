@@ -36,21 +36,27 @@ function ReviewItem({ review }: { review: Review }) {
   const isValidLink = review.reviewLink && review.reviewLink.startsWith("http");
 
   return (
-    <div className="border-b border-gray-200 py-8 last:border-0">
-      <h3 className="text-xl font-bold mb-1">{review.title}</h3>
-      <p className="text-sm text-gray-500 mb-4 uppercase tracking-wide">
-        {[review.source, review.author].filter(Boolean).join(" — ")}
-      </p>
-      {isValidLink && (
-        <Link
-          href={review.reviewLink!}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium underline underline-offset-4 hover:text-gray-600 transition-colors"
-        >
-          READ FULL REVIEW
-        </Link>
-      )}
+    <div className="group border-b border-gray-300 py-10 last:border-0">
+      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4">
+        <div className="flex-1">
+          <h3 className="text-2xl font-serif font-bold text-[#1a1a1a] leading-tight mb-2 group-hover:text-[#8b0000] transition-colors">
+            {review.title}
+          </h3>
+          <p className="text-sm font-bold text-[#8b0000] uppercase tracking-[0.1em] mb-4">
+            {[review.source, review.author].filter(Boolean).join(" — ")}
+          </p>
+          {isValidLink && (
+            <Link
+              href={review.reviewLink!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-xs font-black border-b-2 border-[#1a1a1a] pb-0.5 hover:border-[#8b0000] hover:text-[#8b0000] transition-all uppercase tracking-widest"
+            >
+              Read Full Article
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -66,32 +72,53 @@ export default async function ReviewsPage() {
   );
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16">
-      <h1 className="text-5xl font-light mb-16 tracking-tight">Reviews</h1>
+    <main className="max-w-4xl mx-auto px-6 py-20">
+      <header className="mb-20 border-l-8 border-[#8b0000] pl-8">
+        <h1 className="text-6xl font-serif font-bold text-[#1a1a1a] tracking-tight mb-4">
+          Reviews
+        </h1>
+        <p className="text-gray-600 italic font-serif text-lg">
+          Critical reception and press commentary.
+        </p>
+      </header>
 
-      <section className="mb-20">
-        <h2 className="text-xs font-black tracking-[0.2em] uppercase border-b border-black pb-2 mb-8">
-          RECORDING REVIEWS
-        </h2>
+      <section className="mb-24">
+        <div className="flex items-center mb-10">
+          <h2 className="text-sm font-black tracking-[0.3em] text-white bg-[#1a1a1a] px-4 py-2 uppercase">
+            Recording Reviews
+          </h2>
+          <div className="flex-1 h-[1px] bg-[#1a1a1a] ml-4"></div>
+        </div>
         {recordingReviews.length > 0 ? (
-          recordingReviews.map((review: Review) => (
-            <ReviewItem key={review._id} review={review} />
-          ))
+          <div className="space-y-2">
+            {recordingReviews.map((review: Review) => (
+              <ReviewItem key={review._id} review={review} />
+            ))}
+          </div>
         ) : (
-          <p className="text-gray-400 italic">No recording reviews found.</p>
+          <p className="text-gray-400 font-serif italic">
+            No recording reviews currently listed.
+          </p>
         )}
       </section>
 
-      <section>
-        <h2 className="text-xs font-black tracking-[0.2em] uppercase border-b border-black pb-2 mb-8">
-          PERFORMANCE REVIEWS
-        </h2>
+      <section className="mb-20">
+        <div className="flex items-center mb-10">
+          <h2 className="text-sm font-black tracking-[0.3em] text-white bg-[#8b0000] px-4 py-2 uppercase">
+            Performance Reviews
+          </h2>
+          <div className="flex-1 h-[1px] bg-[#8b0000] ml-4"></div>
+        </div>
         {performanceReviews.length > 0 ? (
-          performanceReviews.map((review: Review) => (
-            <ReviewItem key={review._id} review={review} />
-          ))
+          <div className="space-y-2">
+            {performanceReviews.map((review: Review) => (
+              <ReviewItem key={review._id} review={review} />
+            ))}
+          </div>
         ) : (
-          <p className="text-gray-400 italic">No performance reviews found.</p>
+          <p className="text-gray-400 font-serif italic">
+            No performance reviews currently listed.
+          </p>
         )}
       </section>
     </main>
