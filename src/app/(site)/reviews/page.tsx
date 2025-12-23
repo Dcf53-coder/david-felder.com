@@ -71,7 +71,7 @@ function ReviewItem({ review }: { review: Review }) {
               href={review.reviewLink!}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-xs font-black border-b-2 border-[#1a1a1a] pb-0.5 hover:border-[#8b0000] hover:text-[#8b0000] transition-all uppercase tracking-widest"
+              className="inline-block text-xs font-black border-b-2 border-[#1a1a1a] pb-0.5 hover:border-[#c2410c] hover:text-[#c2410c] transition-all uppercase tracking-widest"
             >
               Read More
             </Link>
