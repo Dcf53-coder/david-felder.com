@@ -74,14 +74,6 @@ export const MobileNav: FC = () => {
             </li>
             <li>
               <MobileNavLink
-                href="/programming"
-                onClick={() => setIsOpen(false)}
-              >
-                Programming
-              </MobileNavLink>
-            </li>
-            <li>
-              <MobileNavLink
                 href="/recordings"
                 onClick={() => setIsOpen(false)}
               >
@@ -91,6 +83,19 @@ export const MobileNav: FC = () => {
             <li>
               <MobileNavLink href="/reviews" onClick={() => setIsOpen(false)}>
                 Reviews
+              </MobileNavLink>
+            </li>
+            <li>
+              <MobileNavLink
+                href="/programming"
+                onClick={() => setIsOpen(false)}
+              >
+                Programming
+              </MobileNavLink>
+            </li>
+            <li>
+              <MobileNavLink href="/contact" onClick={() => setIsOpen(false)}>
+                Contact
               </MobileNavLink>
             </li>
           </ul>
