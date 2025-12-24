@@ -42,7 +42,7 @@ export default async function ReviewsPage() {
     <main className="max-w-4xl mx-auto px-6 py-20">
       <header className="mb-20 flex flex-col items-center md:items-start">
         <h1 className="text-6xl md:text-8xl font-black tracking-tight text-[#1a1a1a]">
-          Reviewsss
+          Reviews
         </h1>
         {/* Updated to David's Brand Red */}
         <div className="mt-4 h-2 w-32 bg-[#c2410c]" />
