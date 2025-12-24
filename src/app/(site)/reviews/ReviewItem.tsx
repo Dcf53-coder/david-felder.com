@@ -36,7 +36,7 @@ export function ReviewItem({ review }: { review: any }) {
             onClick={() => setIsExpanded(!isExpanded)}
             className="w-fit text-xs font-black border-b-2 border-[#1a1a1a] pb-0.5 hover:border-[#c2410c] hover:text-[#c2410c] transition-all uppercase tracking-widest"
           >
-            {isExpanded ? "↑ Show Less" : "↓ Read Full Review Text"}
+            {isExpanded ? "↑ Show Less" : "↓ Read More..."}
           </button>
 
           {isExpanded && review.reviewLink && (
