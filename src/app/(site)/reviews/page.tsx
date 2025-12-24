@@ -29,7 +29,8 @@ const REVIEWS_QUERY = defineQuery(`{
     source,
     author,
     reviewLink,
-    excerpt
+    excerpt,
+    body
   }
 }`);
 
