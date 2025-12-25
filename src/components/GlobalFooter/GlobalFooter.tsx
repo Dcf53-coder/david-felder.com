@@ -11,7 +11,7 @@ export const GlobalFooter = () => {
           <div className="md:col-span-2 space-y-6">
             <Link href="/" className="group inline-block">
               <span className="text-4xl font-black tracking-tighter group-hover:text-accent transition-colors duration-500">
-                David Felder
+                David Feldersss
               </span>
             </Link>
             <p className="text-background/60 max-w-sm text-sm leading-relaxed">
