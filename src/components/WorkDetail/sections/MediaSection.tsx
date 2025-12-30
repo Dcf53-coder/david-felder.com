@@ -17,9 +17,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
   audio,
   videos,
 }) => {
-  // 1. STRICT VALIDATION: Check the "first wording" and API format
+  // 1. STRICT VALIDATION: Targeting "Nexus" dead links specifically
   const embedUrl = useMemo(() => {
-    // Immediate exit if the URL is clearly a placeholder or incomplete draft
     if (
       !soundCloudEmbedUrl ||
       soundCloudEmbedUrl.trim().length < 20 ||
@@ -30,11 +29,16 @@ export const MediaSection: FC<MediaSectionProps> = ({
 
     const url = soundCloudEmbedUrl.trim();
 
+    // Secondary Check: Ensure it's likely a track link, not a user profile or empty set
+    // This helps clean up the "dead links" David mentioned on specific pieces.
+    const pathParts = url.split("/").filter(Boolean);
+    if (pathParts.length < 4) return null;
+
     try {
       const info = getEmbedInfo(url);
 
-      // David's Fix: Only show if it's a valid track API link.
-      // If it's a browser link that can't be embedded, we return null to HIDE it.
+      // Final check: If it's a browser link that SoundCloud's API won't accept,
+      // we return null so the grey "Invalid URL" box NEVER renders.
       if (
         info?.provider === "soundcloud" &&
         info.embedUrl?.includes("api.soundcloud.com")
@@ -50,8 +54,18 @@ export const MediaSection: FC<MediaSectionProps> = ({
 
   // 2. Filter list items to ensure they aren't "ghost" records or unpublished drafts
   const validAudio = useMemo(() => {
+    // Only pass audio items that have a real URL and pass the SoundCloud API check
     return (
-      audio?.filter((item) => item.url && item.url.startsWith("http")) || []
+      audio?.filter((item) => {
+        if (!item.url || !item.url.startsWith("http")) return false;
+
+        // Apply the same strict API check to the list items
+        const info = getEmbedInfo(item.url);
+        if (info?.provider === "soundcloud") {
+          return info.embedUrl?.includes("api.soundcloud.com");
+        }
+        return true;
+      }) || []
     );
   }, [audio]);
 
@@ -64,7 +78,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
   const hasAudio = validAudio.length > 0;
   const hasVideos = validVideos.length > 0;
 
-  // 3. Section visibility: If no valid content, the section returns null (David's cleanup)
+  // 3. Section visibility: Hide everything if no valid content exists
   const hasContent = !!embedUrl || hasAudio || hasVideos;
 
   if (!hasContent) return null;
@@ -76,7 +90,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
       </h2>
 
       <div className="space-y-6">
-        {/* SoundCloud Player - Hidden if dead/bad link */}
+        {/* Main SoundCloud Player */}
         {embedUrl && (
           <div className="rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
             <iframe
@@ -92,7 +106,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
           </div>
         )}
 
-        {/* These components are only rendered if they contain valid, playable links */}
+        {/* List of valid Recordings/Videos */}
         {hasAudio && <AudioSection audio={validAudio} />}
         {hasVideos && <VideosSection videos={validVideos} />}
       </div>
